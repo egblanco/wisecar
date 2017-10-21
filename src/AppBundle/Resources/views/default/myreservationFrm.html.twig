@@ -1,0 +1,47 @@
+{% block myreservationFrm %}
+    <div class="row">
+
+        <div class="col-md-12 seccion-header margin-top-table-rates bar-up-padd-left">
+            <h3 class="bar-up-font-main">My Reservation</h3>
+        </div>
+        <form name="alquiler_primer_paso" method="post" action="{{ path('wizard') }}">
+        <div class="col-md-12 frm-style-paso">
+            <div class="col-md-12">
+                <label class="text-label">Pick-up Location:</label>
+                {{ form_widget(form_reserva.lugarRecogida, { 'label_attr': {'class': 'text-label'},'attr': {'class': 'form-control input-own'} }) }}
+            </div>
+            <div class="col-md-12">
+                <div class="checkbox">
+                    <label class="text-label">
+                        {{ form_widget(form_reserva.samePlace, { 'label_attr': {'class': 'text-label'}}) }} Returning to same location (Uncheck for diferent location)
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-12 hidden" id="lugarRegreso">
+                <label class="text-label">Pick-up Location:</label>
+                {{ form_widget(form_reserva.lugarRegreso, { 'label_attr': {'class': 'text-label'},'attr': {'class': 'form-control input-own'} }) }}
+            </div>
+            <div class="col-md-12">
+                <label class="text-label">Pick-up date:</label>
+                {{ form_widget(form_reserva.fechaInicio, { 'label_attr': {'class': 'text-label'},'attr': {'class': 'form-control input-own bttimepicker'} }) }}
+            </div>
+            <div class="col-md-12">
+                <label class="text-label">Return date:</label>
+                {{ form_widget(form_reserva.fechaFin, { 'label_attr': {'class': 'text-label'},'attr': {'class': 'form-control input-own bttimepicker'} }) }}
+            </div>
+            <div class="col-md-12">
+                <label class="text-label">Car Type:</label>
+                {{ form_widget(form_reserva.auto, { 'label_attr': {'class': 'text-label'},'attr': {'class': 'form-control input-own'} }) }}
+            </div>
+            <div class="col-md-12">
+                <label class="text-label">Hot Deal Code:</label>
+                {{ form_widget(form_reserva.codigo, { 'label_attr': {'class': 'text-label'},'attr': {'class': 'form-control input-own'} }) }}
+            </div>
+            <div class="col-md-12">
+                <button type="submit" class="btn pull-right text-go-button">Go</button>
+            </div>
+        </div>
+            {{ form_rest(form_reserva) }}
+        </form>
+    </div>
+{% endblock %}

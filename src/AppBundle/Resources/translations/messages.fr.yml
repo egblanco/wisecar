@@ -1,0 +1,85 @@
+base.locale.es: Spanish
+base.locale.en: English
+base.locale.fr: French
+
+notification.contact_thanks: "Your message will be attended. Thanks for contact our team."
+
+Previous : Previous
+Next : Next
+
+sidebar.main.carRental : car rental
+sidebar.main.home : home
+sidebar.main.car : cars
+sidebar.main.rates : rates
+sidebar.main.wiseDeals : wise deals
+sidebar.main.faqs : faqs
+sidebar.main.travelTips : travel tips
+sidebar.main.testimonials : testimonials
+sidebar.main.contactUs : contact us
+sidebar.main.reasMore : Read more
+
+base.footer.rentalCarService : Renta de autos en
+base.footer.dropOff : A drop off charge apply according to numbers of days rental
+base.footer.share : Share
+base.footer.signUp : Sign up
+base.footer.signIn : Sign in
+base.footer.logout : Logout
+
+form.lastminute.title : last minute
+form.lastminute.selectyour : select your car
+form.lastminute.ratesare : Rates are per week in USD
+form.lastminute.validFor : Valid for
+form.lastminute.to : to
+form.lastminute.select : select
+
+page.index.title.makeNow : MAKE YOUR RESERVATION NOW
+page.index.title.welcome : WELCOME TO WISE RENTAL
+page.index.title.findUs : find us
+page.index.title.wiseOffers : wise offers
+page.index.title.gallery : gallery
+page.index.title.careAbout : WE CARE ABOUT YOU - LOW PRICE GUARANTEE -EQUIREMENTS - LOCATION - SHUTTLE SERVICE - RENTAL PRICED
+page.index.title.whyShould : WHY SHOULD I RENT A CAR DURING MY VISIT TO CANCUN, MEXICO
+
+page.cars.title.wiseCar : WISE CAR RENTAL SELECT YOUR CAR NOW
+page.cars.title.perDay : p/day
+page.cars.title.perWeek : p/weekr
+page.cars.title.yes : OUI
+page.cars.title.bigpack : Big packs
+page.cars.title.littlepack : Little packs
+
+page.rates.title.lowestRate : LOWEST RATES NOW
+page.rates.title.carModel : Car model
+page.rates.title.day : day
+page.rates.title.week : week
+
+page.great.title.getWise : GET WISE DEALS WITH US
+page.great.title.getFrom : GET FROM 10 TO 15 % DISCOUNT ON YOUR NETX CAR RENTAL
+
+page.faqs.title.seek : SEEK YOUR WISE ANSWER HERE
+page.faqs.title.before : BEFORE STARTING YOUR TRIP WE GIVE YOU SOME SMARTS WHICH HELP YOU WITH TRAVELLING AROUND MEXICO IN A WISE WAY
+
+page.testimonials.title.maketestimonial : MAKE YOUR WISE COMMENT ABOUT US
+page.testimonials.title.client : Client
+page.testimonials.title.sendacomment : SEND A COMMENT
+page.testimonials.title.nombre : Name
+page.testimonials.title.correo : Mail
+page.testimonials.title.notpubliccorreo : Mail not public
+page.testimonials.title.servicio : Service
+page.testimonials.title.titulo : Tittle
+page.testimonials.title.texto : Text
+page.testimonials.title.enviar : Send
+page.testimonials.title.limpiar : clear
+
+reservation.view : View
+reservation.modify : Modify
+reservation.cancel : Cancel
+reservation.step : STEP
+
+reservation.form.pickup_location : Pick-up location
+reservation.form.pickup_date : Pick-up Date - Hour
+reservation.form.returningSameLocation : Returning to same location (Unchecked for different location)
+reservation.form.returnDate : Return Date - Hour
+reservation.form.returnPlace : Return Place
+reservation.form.carType : Car Type
+reservation.form.code : Code
+reservation.form.go : GO

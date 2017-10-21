@@ -1,0 +1,5 @@
+
+SecurityAnnotations:
+    resource: "@abdBlogBundle/Controller/"
+    prefix:   /
+    type:     annotation

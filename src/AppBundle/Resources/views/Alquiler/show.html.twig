@@ -1,0 +1,254 @@
+{% extends '::base.html.twig' %}
+{% block javascripts %}
+    <script>
+        $(function () {
+            $(document).tooltip({
+                position: {
+                    my: "center bottom-20",
+                    at: "center top",
+                    using: function (position, feedback) {
+                        $(this).css(position);
+                        $("<div>")
+                                .addClass("arrow")
+                                .addClass(feedback.vertical)
+                                .addClass(feedback.horizontal)
+                                .appendTo(this);
+                    }
+                }
+            });
+        });
+        $(function () {
+            $(document).tooltip({
+                items: "img, [data-geo], [title]",
+                content: function () {
+                    var element = $(this);
+                    if (element.is("[data-geo]")) {
+                        var text = element.text();
+                        return "<img class='map' alt='" + text +
+                                "' src='http://localhost/symfony/2.7/install/source/WiseCar/web/bundles/app/frontend/icons/icon114x1142.png" +
+
+                                "'>";
+                    }
+                    if (element.is("[title]")) {
+                        return element.attr("title");
+                    }
+                    if (element.is("img")) {
+                        return element.attr("alt");
+                    }
+                }
+            });
+        });
+    </script>
+{% endblock %}
+{% block content %}
+    <div class="col-md-12" style="margin-top: 20px">
+        <div class="col-md-12" style="padding-left: 0px;padding-right: 10px">
+            <div class="col-md-12 seccion-header" style="padding-left: 5px">
+                <h1 style=" font-size: 11pt; margin-top: 10px">Information</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12 br-own">
+        <div class="br-own"></div>
+        <div class="col-md-4">
+            <div class="list-group br-own">
+                <a class="list-group-item hover-item"><span class="text-information">{{ 'page.testimonials.title.nombre' |  trans }}: </span><span
+                            class="text-information-data">{{ entity.cliente.nombre }}</span></a>
+                <a class="list-group-item hover-item"><span class="text-information">Apellidos: </span><span
+                            class="text-information-data">{{ entity.cliente.apellido }}</span></a>
+                <a class="list-group-item hover-item"><span
+                            class="text-information">Fecha Nacimiento: </span><span
+                            class="text-information-data">{{ entity.cliente.fechaNacimiento|date('Y-m-d H:i:s') }}</span></a>
+                <a class="list-group-item hover-item"><span
+                            class="text-information">Compa&ntilde;&iacute;a: </span><span
+                            class="text-information-data">{{ entity.cliente.compania }}</span></a>
+                <a class="list-group-item hover-item"><span
+                            class="text-information">Tel&eacute;fono: </span><span
+                            class="text-information-data">{{ entity.cliente.telefono }}</span></a>
+                <a class="list-group-item hover-item"><span class="text-information">Correo: </span><span
+                            class="text-information-data">{{ entity.cliente.correo }}</span></a>
+                <a class="list-group-item hover-item"><span class="text-information">Fax: </span><span
+                            class="text-information-data">{{ entity.cliente.fax }}</span></a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="list-group br-own">
+
+                <a class="list-group-item hover-item"><span
+                            class="text-information">Direcci&oacute;n: </span><span
+                            class="text-information-data">{{ entity.cliente.direccion }}</span></a>
+                <a class="list-group-item hover-item"><span class="text-information">Ciudad: </span><span
+                            class="text-information-data">{{ entity.cliente.ciudad }}</span></a>
+                <a class="list-group-item hover-item"><span class="text-information">Estado: </span><span
+                            class="text-information-data">{{ entity.cliente.estado }}</span></a>
+                <a class="list-group-item hover-item"><span class="text-information">Pa&iacute;s: </span><span
+                            class="text-information-data">{{ entity.cliente.pais }}</span></a>
+                <a class="list-group-item hover-item"><span class="text-information">Zip: </span><span
+                            class="text-information-data">{{ entity.cliente.zip }}</span></a>
+                <a class="list-group-item hover-item"><span
+                            class="text-information">Cantidad de Personas: </span><span
+                            class="text-information-data">{{ entity.cliente.cantidadPersonas }}</span></a>
+                <a class="list-group-item hover-item"><span class="text-information">Estar&aacute;
+                        en hotel: </span><span
+                            class="text-information-data">
+                        {% if entity.cliente.enHotel == true %}
+                            {{ "Sí" }}
+                        {% else %}
+                            {{ "No" }}
+                        {% endif %}
+                    </span></a>
+
+
+            </div>
+        </div>
+        <div class="col-md-4">
+            <table class="table table-bordered table-striped">
+                <ul class="list-group">
+
+                    <li class="list-group-item list-group-comp-car-border">
+                        <p>
+                            <b class="text-information-data">Entrada: </b> {{ entity.lugarRecogida }}
+                        </p>
+                        <p>
+                            <b class="text-information-data">Retorno: </b> {{ entity.lugarRegreso }}
+                        </p>
+                        <p>
+                            <b class="text-information-data">Fecha
+                                Entrada: </b> {{ entity.fechaInicio|date('Y-m-d H:i') }}
+                        </p>
+                        <p>
+                            <b class="text-information-data">Fecha Retorno: </b> {{ entity.fechaFin|date('Y-m-d H:i') }}
+                        </p>
+                        <p>
+                            <b class="text-information-data">Auto: </b> {{ entity.auto.modelo }}
+                        </p>
+                    </li>
+                    <li class="list-group-item list-group-comp-car">
+                        <div>
+                            <span>
+                                <img class="img-comp-car" title={{ entity.auto.pasajeros }}
+                                src="{{ asset('bundles/app/frontend/icons/cUser.png') }}"
+                                     onmouseover="this.src='{{ asset('bundles/app/frontend/icons/cUserRed.png') }}'"
+                                     onmouseout="this.src='{{ asset('bundles/app/frontend/icons/cUser.png') }}';">
+                            </span>
+                            <span>
+
+                                <img class="img-comp-car"
+                                     title={{ entity.auto.transmision }} src="{{ asset('bundles/app/frontend/icons/cDir.png') }}"
+                                     onmouseover="this.src='{{ asset('bundles/app/frontend/icons/cDirRed.png') }}'"
+                                     onmouseout="this.src='{{ asset('bundles/app/frontend/icons/cDir.png') }}';">
+                            </span>
+                            <span>
+                                <img class="img-comp-car"
+                                        {% if entity.auto.aire == true %}
+                                            title="YES"
+                                        {% else %}
+                                            title="NO"
+                                        {% endif %}
+                                     src="{{ asset('bundles/app/frontend/icons/cAire.png') }}"
+                                     onmouseover="this.src='{{ asset('bundles/app/frontend/icons/cAireRed.png') }}'"
+                                     onmouseout="this.src='{{ asset('bundles/app/frontend/icons/cAire.png') }}';">
+                            </span>
+                            <span><img class="img-comp-car"
+                                        {% if entity.auto.cdReproductor == true %}
+                                            title="YES"
+                                        {% else %}
+                                            title="NO"
+                                        {% endif %}
+                                       src="{{ asset('bundles/app/frontend/icons/cMusic.png') }}"
+                                       onmouseover="this.src='{{ asset('bundles/app/frontend/icons/cMusicRed.png') }}'"
+                                       onmouseout="this.src='{{ asset('bundles/app/frontend/icons/cMusic.png') }}';">
+                            </span>
+                            <span><img class="img-comp-car"
+
+                                       title={{ entity.auto.puertas }}
+
+                                       src="{{ asset('bundles/app/frontend/icons/cPuertas.png') }}"
+                                       onmouseover="this.src='{{ asset('bundles/app/frontend/icons/cPuertasRed.png') }}'"
+                                       onmouseout="this.src='{{ asset('bundles/app/frontend/icons/cPuertas.png') }}';">
+                            </span>
+                            <span>
+                                <img class="img-comp-car"
+                                     title='Maletas Grandes: {{ entity.auto.maletasGrandes }}  Maletas Pequeñas:  {{ entity.auto.maletasPequenas }}'
+                                     src="{{ asset('bundles/app/frontend/icons/cMaleta.png') }}"
+                                     onmouseover="this.src='{{ asset('bundles/app/frontend/icons/cMaletaRed.png') }}'"
+                                     onmouseout="this.src='{{ asset('bundles/app/frontend/icons/cMaleta.png') }}';">
+                            </span>
+
+                        </div>
+
+                    </li>
+                    <li class="list-group-item list-group-comp-car-border text-center">
+                        <div><img class="img-car-show-lat"
+                                  src="{{ asset('uploads/images/products/') }}{{ entity.auto.image }}">
+                        </div>
+                    </li>
+                </ul>
+            </table>
+        </div>
+        <div class="col-md-12">
+            {% if accesorios != "empty" %}
+                <div class="col-md-8">
+                    <div class="col-md-12 seccion-header-blue br-own">
+                        <h2 style=" font-size: 10pt; margin-top: 10px">Cobertura y Seguro</h2>
+                    </div>
+                    {% for acc in accesorios %}
+                        <div class="col-md-6">
+                            <p><strong class="text-information-data">{{ acc.nombre }}</strong></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p>${{ acc.precio }} USD</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <div class="col-md-4">
+                <li class="list-group-item button-component-rent comp-car-general-border ">
+                    <div class="button-component-rent">Precio Total
+                    </div>
+
+                </li>
+                <li class="list-group-item text-center comp-car-general-border">
+                    <div class="text-total-price">
+                        {{ entity.total }} USD
+                    </div>
+                </li>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="col-md-12 br-own text-center">
+        <ul class="list-group">
+            <li class="list-group-item">
+                <p>
+                    <b class="text-information-data">Observaciones: </b> Si usted desea ver, modificar o cancelar su
+                    reservaci&oacute;n o datos del
+                    cliente,
+                    por favor guarde esta informaci&oacute;n que ser&aacute; utilizada como sus datos de
+                    identificaci&oacute;n.
+                </p>
+                <p>
+                    Este c&oacute;digo no es de confirmaci&oacute;n, es un c&oacute;digo de reservaci&oacute;n.
+                </p>
+                <p><b>C&oacute;digo de reservaci&oacute;n: </b><span class="text-red-t">{{ entity.codigo }}</span>
+                </p>
+                <p><b>Correo: </b><span class="text-blue-t">{{ entity.cliente.correo }}</span></p>
+            </li>
+        </ul>
+
+    </div>
+
+
+    <div class="row text-center">
+        <a href="{{ path('wizard_update', { 'id': entity.id }) }}" class="btn text-go-button">
+            Editar Alquiler
+        </a>
+
+            {{ form(delete_form) }}
+
+    </div>
+{% endblock %}

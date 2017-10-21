@@ -1,0 +1,669 @@
+{% extends '::base.html.twig' %}
+
+
+{% block javascripts %}
+    <script>
+        $(function () {
+            $(document).tooltip({
+                position: {
+                    my: "center bottom-20",
+                    at: "center top",
+                    using: function (position, feedback) {
+                        $(this).css(position);
+                        $("<div>")
+                                .addClass("arrow")
+                                .addClass(feedback.vertical)
+                                .addClass(feedback.horizontal)
+                                .appendTo(this);
+                    }
+                }
+            });
+        });
+        $(function () {
+            $(document).tooltip({
+                items: "img, [data-geo], [title]",
+                content: function () {
+                    var element = $(this);
+                    if (element.is("[data-geo]")) {
+                        var text = element.text();
+                        return "<img class='map' alt='" + text +
+                                "' src='http://localhost/symfony/2.7/install/source/WiseCar/web/bundles/app/frontend/icons/icon114x1142.png" +
+
+                                "'>";
+                    }
+                    if (element.is("[title]")) {
+                        return element.attr("title");
+                    }
+                    if (element.is("img")) {
+                        return element.attr("alt");
+                    }
+                }
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            $(document).ready(function () {
+                $('.bttimepicker').datetimepicker({
+                    sideBySide: false,
+                    format: 'MM/DD/YYYY-HH:mm',
+                    toolbarPlacement: 'bottom',
+                    showClose: true,
+                    locale: '{{ app.request.locale|escape('js') }}'
+                });
+
+                if ($("#alquiler_segundo_paso_samePlace").is(':checked')) {
+                    $('#lugarRegreso').addClass('hidden');
+                    setRecogidaRequired();
+                }
+
+
+                $('#alquiler_segundo_paso_samePlace').click(function () {
+                    $('#lugarRegreso').toggleClass('hidden');
+                    setRecogidaRequired();
+                });
+
+                function setRecogidaRequired() {
+                    if ($('#lugarRegreso').hasClass('hidden') == false) {
+                        $('#alquiler_segundo_paso_lugarRegreso').attr('required', 'required');
+                    } else {
+                        $('#alquiler_segundo_paso_lugarRegreso').removeAttr('required');
+                    }
+                }
+
+                if ($('#alquiler_segundo_paso_codigo').val() === "") {
+                    setAutoCode($('#alquiler_segundo_paso_codigo'));
+                }
+                $('#alquiler_segundo_paso_auto').on('change', function () {
+                    setAutoCode(this);
+                    refreshPrice();
+                });
+
+                var fechaini = new Date($('#alquiler_segundo_paso_fechaInicio').val());
+                var fechafin = new Date($('#alquiler_segundo_paso_fechaFin').val());
+
+
+                function setAutoCode(select) {
+                    var value = $('option:selected', select).attr('code');
+                    $('#alquiler_segundo_paso_codigo').val(value);
+                }
+
+                var valuesSeguros = new Array;
+                var valuesAccesorios = new Array;
+
+                $("input[name^='alquiler_segundo_paso']").change(function () {
+                    refreshPrice();
+                });
+
+                $("#alquiler_segundo_paso_fechaInicio").on("dp.change", function (e) {
+                    var fechaini = new Date($('#alquiler_segundo_paso_fechaInicio').val());
+                    var fechafin = new Date($('#alquiler_segundo_paso_fechaFin').val());
+                    var error = compararFecha(fechafin.getTime(), fechaini.getTime());
+                    if (error == 0)
+                        refreshPrice();
+                    else
+                        alert("Error en fechas");
+                });
+
+                $("#alquiler_segundo_paso_fechaFin").on("dp.change", function (e) {
+                    var fechaini = new Date($('#alquiler_segundo_paso_fechaInicio').val());
+                    var fechafin = new Date($('#alquiler_segundo_paso_fechaFin').val());
+                    var error = compararFecha(fechafin.getTime(), fechaini.getTime());
+                    if (error == 0)
+                        refreshPrice();
+                    else
+                        alert("Error en fechas");
+                });
+
+                refreshPrice();
+
+                function compararFecha(fechafin, fechaini) {
+                    var error = 0;
+                    if (fechafin != NaN || fechaini != NaN) {
+                        if (fechafin < fechaini)
+                            error = 1;
+                        return error;
+                    }
+                    else {
+                        error = 1;
+                        return error;
+                    }
+
+                }
+
+                function comprobarErrorFechas(regreso, fechafin) {
+                    var error = 0;
+                    if (regreso == NaN || fechafin == NaN)
+                        error = 1;
+                    return error;
+                }
+
+                function refreshPrice() {
+                    var fechaini = new Date($('#alquiler_segundo_paso_fechaInicio').val());
+                    var fechafin = new Date($('#alquiler_segundo_paso_fechaFin').val());
+
+                    if (comprobarErrorFechas(fechafin.getTime(), fechaini.getTime()) == 0) {
+                        var accesoriosArray = new Array;
+                        $('input[name="alquiler_segundo_paso[accesorios][]"]:checked').each(function () {
+                            accesoriosArray.push($(this).val());
+                        });
+
+                        var segurosArray = new Array;
+                        $('input[name="alquiler_segundo_paso[seguros][]"]:checked').each(function () {
+                            segurosArray.push($(this).val());
+                        });
+
+
+                        $('#loading').removeClass('hidden');
+                        var action = $('#hidden_action').val();
+                        var id = $('#alquiler_segundo_paso_auto').val();
+                        var seguros = segurosArray;
+                        if (seguros == "")
+                            seguros = 0;
+//                    var accesorios = $('input[name="alquiler_segundo_paso[accesorios][]"]').serialize();
+                        var accesorios = accesoriosArray;
+                        if (accesorios == "")
+                            accesorios = 0;
+                        if (id && id != null) {
+                            var url = action.replace('_id', id);
+
+                            var fechaini = new Date($('#alquiler_segundo_paso_fechaInicio').val());
+                            var fechafin = new Date($('#alquiler_segundo_paso_fechaFin').val());
+                            var codigo = $('#alquiler_segundo_paso_codigo').val();
+                            var recogida = $('#alquiler_segundo_paso_lugarRecogida').val();
+                            var regreso = $('#alquiler_segundo_paso_lugarRegreso').val();
+                            if (regreso == "")
+                                regreso = recogida;
+                            url = url.replace('_recogida', recogida);
+                            url = url.replace('_regreso', regreso);
+                            url = url.replace('_accesorios', accesorios);
+                            url = url.replace('_seguros', seguros);
+                            url = url.replace('_codigo', codigo);
+                            url = url.replace('_fechaini', fechaini.getTime());
+                            url = url.replace('_fechafin', fechafin.getTime());
+
+
+                            $.post(url, {}, function (data) {
+                                //the response is in the data variable
+                                if (data.responseCode === 200) {
+                                    $('#loading').addClass('hidden');
+                                    $('#insurance').text(data.insurance + "$");
+                                    $('#subTotal').text(data.subtotal + "$");
+                                    $('#stateTax').text(data.tax + "$");
+                                    if (data.total < 0)
+                                        $('#totalUsd').text("0$");
+                                    else
+                                        $('#totalUsd').text(data.total + "$");
+
+                                } else {
+                                    alert('Error :-(');
+                                }
+                            });
+                        }
+                    }
+                    else {
+                        alert("Existe un error en las fechas");
+                    }
+
+                }
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+
+    {% set selected2 = "text-seccion-step-number-select" %}
+    {% set selected3 = "text-seccion-step-number" %}
+    {% set selected4 = "text-seccion-step-number" %}
+
+    {% if flow.getCurrentStepNumber() == 3 %}
+        {% set selected2 = "text-seccion-step-number" %}
+        {% set selected3 = "text-seccion-step-number-select" %}
+        {% set selected4 = "text-seccion-step-number" %}
+    {% endif %}
+    {% if flow.getCurrentStepNumber() == 4 %}
+        {% set selected2 = "text-seccion-step-number" %}
+        {% set selected4 = "text-seccion-step-number-select" %}
+        {% set selected3 = "text-seccion-step-number" %}
+    {% endif %}
+
+    <div class="col-md-12 bar-up-margin">
+        <div class="col-md-9 bar-up-padd">
+            <div class="col-md-5 seccion-header bar-up-padd-left">
+                <h1 class="bar-up-font-main">make your reservation now!!!</h1>
+            </div>
+
+            <div class="col-md-7 text-seccion bar-up-padd-t-b">
+                <span class="label label-success bar-up-font-v-m-c "><a class="color-font-white"
+                                                                        href="{{ path('alquiler_search') }}">View</a></span>
+                <span class="label label-success bar-up-font-v-m-c "><a class="color-font-white"
+                                                                        href="{{ path('alquiler_search') }}">Modify</a></span>
+                <span class="label label-success bar-up-font-v-m-c "><a class="color-font-white"
+                                                                        href="{{ path('alquiler_search') }}">Cancel</a></span>
+                <span class="text-seccion-step">step</span>
+                <span class="text-seccion-step-number">1</span>
+                <span class="{{ selected2 }}">2</span>
+                <span class="{{ selected3 }}">3</span>
+                <span class="{{ selected4 }}">4 </span>
+            </div>
+        </div>
+        <div class="col-md-3 text-right">
+            {% include 'AppBundle:default:redes.html.twig' %}
+        </div>
+    </div>
+    <div>
+        {#Steps:#}
+        {#{% include 'CraueFormFlowBundle:FormFlow:stepList.html.twig' %}#}
+    </div>
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    {% if  flow.getCurrentStepNumber() == 2 %}
+        <div class="col-md-12 row">
+            <div class="col-md-9">
+
+                <div class="row  br-own">
+                    <div class="col-md-6 pull-left">
+                        <label class="text-label">{{ 'reservation.form.pickup_location' |  trans }}:</label>
+                        {{ form_widget(form.lugarRecogida, { 'label_attr': {'class': 'text-label'},'attr': {'class': 'form-control input-own'} }) }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="text-label">Pick-up date - Hour:</label>
+                        {{ form_widget(form.fechaInicio, { 'label_attr': {'class': 'text-label'},'attr': {'class': 'form-control input-own bttimepicker'} }) }}
+                    </div>
+                </div>
+                <div class="row  br-own">
+                    <div class="col-md-6">
+                        <div class="checkbox">
+                            <label>
+                                {{ form_widget(form.samePlace, { 'label_attr': {'class': 'text-label'}}) }} Returning to
+                                same location (Unchecked for different location)
+                            </label>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+                        <label class="text-label">Return date - Hour:</label>
+                        {{ form_widget(form.fechaFin, { 'label_attr': {'class': 'text-label'},'attr': {'class': 'form-control input-own bttimepicker'} }) }}
+                    </div>
+                </div>
+                <div id="lugarRegreso" class="row br-own" id="lugarRegreso">
+                    <div class="col-md-6">
+                        {{ form_row(form.lugarRegreso, { 'label_attr': {'class': 'text-label'},'attr': {'class': 'form-control input-own'} }) }}
+                    </div>
+                </div>
+                <div class="row  br-own">
+                    <div class="col-md-6">
+                        {{ form_row(form.auto, { 'label_attr': {'class': 'text-label'},'attr': {'class': 'form-control input-own'} }) }}
+                    </div>
+                    <div class="col-md-4">
+                        <label class="text-label">Code:</label>
+                        {{ form_widget(form.codigo, { 'label_attr': {'class': 'text-label'},'attr': {'class': 'form-control input-own', 'readonly': 'true'} }) }}
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="text-center col-md-6 col-md-offset-3">
+                        <table class="table table-bordered table-striped">
+                            <ul class="list-group">
+                                <li class="list-group-item list-group-comp-car">
+                                    <div>
+                            <span><img class="img-comp-car" title={{ formData.auto.pasajeros }}
+                                src="{{ asset('bundles/app/frontend/icons/cUser.png') }}"
+                                       onmouseover="this.src='{{ asset('bundles/app/frontend/icons/cUserRed.png') }}'"
+                                       onmouseout="this.src='{{ asset('bundles/app/frontend/icons/cUser.png') }}';"></span>
+                            <span><img class="img-comp-car"
+                                       title={{ formData.auto.transmision }} src="{{ asset('bundles/app/frontend/icons/cDir.png') }}"
+                                       onmouseover="this.src='{{ asset('bundles/app/frontend/icons/cDirRed.png') }}'"
+                                       onmouseout="this.src='{{ asset('bundles/app/frontend/icons/cDir.png') }}';"></span>
+                            <span><img class="img-comp-car"
+                                        {% if formData.auto.aire == true %}
+                                            title="YES"
+                                        {% else %}
+                                            title="NO"
+                                        {% endif %}
+                                       src="{{ asset('bundles/app/frontend/icons/cAire.png') }}"
+                                       onmouseover="this.src='{{ asset('bundles/app/frontend/icons/cAireRed.png') }}'"
+                                       onmouseout="this.src='{{ asset('bundles/app/frontend/icons/cAire.png') }}';"></span>
+                            <span><img class="img-comp-car"
+                                        {% if formData.auto.cdReproductor == true %}
+                                            title="YES"
+                                        {% else %}
+                                            title="NO"
+                                        {% endif %}
+                                       src="{{ asset('bundles/app/frontend/icons/cMusic.png') }}"
+                                       onmouseover="this.src='{{ asset('bundles/app/frontend/icons/cMusicRed.png') }}'"
+                                       onmouseout="this.src='{{ asset('bundles/app/frontend/icons/cMusic.png') }}';"></span>
+                            <span>
+                                <img class="img-comp-car"
+
+                                     title={{ formData.auto.puertas }}
+
+                                     src="{{ asset('bundles/app/frontend/icons/cPuertas.png') }}"
+                                     onmouseover="this.src='{{ asset('bundles/app/frontend/icons/cPuertasRed.png') }}'"
+                                     onmouseout="this.src='{{ asset('bundles/app/frontend/icons/cPuertas.png') }}';">
+                            </span>
+                            <span><img class="img-comp-car"
+                                       title='Maletas Grandes: {{ formData.auto.maletasGrandes }}  Maletas Pequeñas:  {{ formData.auto.maletasPequenas }}'
+                                       src="{{ asset('bundles/app/frontend/icons/cMaleta.png') }}"
+                                       onmouseover="this.src='{{ asset('bundles/app/frontend/icons/cMaletaRed.png') }}'"
+                                       onmouseout="this.src='{{ asset('bundles/app/frontend/icons/cMaleta.png') }}';"></span>
+
+                                    </div>
+
+                                </li>
+                                <li class="list-group-item list-group-comp-car-border">
+                                    <div><img
+                                                src="{{ asset('uploads/images/products/') }}{{ formData.auto.image }}">
+                                    </div>
+                                </li>
+                            </ul>
+                        </table>
+                    </div>
+
+                </div>
+                <div class="row  br-own">
+                    <div class="col-md-12">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                {{ form_widget(form.seguros, { 'label_attr': {'class': 'text-label'},'attr': {'class': 'form-control input-own'} }) }}
+                            </li>
+                            <li class="list-group-item">
+                                {{ form_widget(form.accesorios, { 'label_attr': {'class': 'text-label'},'attr': {'class': 'form-control input-own'} }) }}
+                            </li>
+                            <li class="list-group-item text-save-money">
+                                <div class="row text-center text-save-money">
+                                    drive save & save money!!!
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="row text-center">
+                                    <span class="text-insurance">Insurances : </span><span class="text-insurance"
+                                                                                           id="insurance">35$</span>
+                                </div>
+                                <div class="row text-center">
+                                    <span class="text-price-other">Sub Total : </span><span class="text-price-other"
+                                                                                            id="subTotal">35$</span>
+                                </div>
+                                <div class="row text-center">
+                                    <span class="text-price-other">State Tax : </span><span class="text-price-other"
+                                                                                            id="stateTax">35$</span>
+                                </div>
+                                <div class="row text-center">
+                                    <span class="text-total-price">Total of USD : </span><span class="text-total-price"
+                                                                                               id="totalUsd">35 &#36;</span>
+                                    <span id="loading" class="hidden"><img class="loading"
+                                                                           src="{{ asset('bundles/app/frontend/general/loadingCurves.gif') }}"></span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row  br-own">
+                    <div class="col-md-12">
+
+                    </div>
+                    <div class="col-md-12   " style="padding-left: 0px">
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-1">
+                        {% include 'CraueFormFlowBundle:FormFlow:buttons.html.twig' %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                {% include 'AppBundle:default:lastminutecars.html.twig' %}
+            </div>
+        </div>
+        <input type="hidden" id="hidden_action"
+               value="{{ path('price', { 'recogida': '_recogida','regreso':'_regreso','id':'_id','accesorios':'_accesorios'
+                   ,'seguros':'_seguros','codigo':'_codigo','fechaini':'_fechaini','fechafin':'_fechafin' }) }}">
+    {% elseif  flow.getCurrentStepNumber() == 3 %}
+        {% set selected2 = "text-seccion-step-number" %}
+        {% set selected4 = "text-seccion-step-number" %}
+        {% set selected3 = "text-seccion-step-number-select" %}
+        <div class="col-md-12 row">
+            <div class="col-md-9">
+                <div class="row  br-own">
+                    <div class="col-md-5 pull-left">
+                        <label class="text-label">{{ 'page.testimonials.title.nombre' |  trans }}:</label>
+                        {{ form_widget(form.cliente.nombre, { 'label_attr': {'class': 'text-label'},'attr': {'class': 'form-control input-own'} }) }}
+                    </div>
+                    <div class="col-md-5 pull-left">
+                        <label class="text-label">Apellido:</label>
+                        {{ form_widget(form.cliente.apellido, { 'label_attr': {'class': 'text-label'},'attr': {'class': 'form-control input-own'} }) }}
+                    </div>
+                </div>
+                <div class="row  br-own">
+                    <div class="col-md-5 pull-left">
+                        <label class="text-label">Fecha Nacimiento:</label>
+                        {{ form_widget(form.cliente.fechaNacimiento, { 'label_attr': {'class': 'text-label'},'attr': {'class': 'form-control input-own bttimepicker'} }) }}
+
+                    </div>
+                    <div class="col-md-5 pull-left">
+                        <label class="text-label">Sexo:</label>
+                        {{ form_widget(form.cliente.sexo, { 'label_attr': {'class': 'text-label'},'attr': {'class': 'form-control input-own'} }) }}
+                    </div>
+                </div>
+                <div class="row  br-own">
+                    <div class="col-md-5 pull-left">
+                        <label class="text-label">Compa&ntilde;&iacute;a:</label>
+                        {{ form_widget(form.cliente.compania, { 'label_attr': {'class': 'text-label'},'attr': {'class': 'form-control input-own'} }) }}
+                    </div>
+                    <div class="col-md-5 pull-left">
+                        <label class="text-label">Tel&eacute;fono:</label>
+                        {{ form_widget(form.cliente.telefono, { 'label_attr': {'class': 'text-label'},'attr': {'class': 'form-control input-own'} }) }}
+                    </div>
+                </div>
+                <div class="row  br-own">
+                    <div class="col-md-5 pull-left">
+                        <label class="text-label">Correo:</label>
+                        {{ form_widget(form.cliente.correo, { 'label_attr': {'class': 'text-label'},'attr': {'class': 'form-control input-own'} }) }}
+                    </div>
+                    <div class="col-md-5 pull-left">
+                        <label class="text-label">Correo Confirmaci&oacute;n:</label>
+                        {{ form_widget(form.cliente.correoConfirmacion, { 'label_attr': {'class': 'text-label'},'attr': {'class': 'form-control input-own'} }) }}
+                    </div>
+                </div>
+                <div class="row  br-own">
+                    <div class="col-md-5 pull-left">
+                        <label class="text-label">Fax:</label>
+                        {{ form_widget(form.cliente.fax, { 'label_attr': {'class': 'text-label'},'attr': {'class': 'form-control input-own'} }) }}
+                    </div>
+                    <div class="col-md-5 pull-left">
+                        <label class="text-label">Direcci&oacute;n:</label>
+                        {{ form_widget(form.cliente.direccion, { 'label_attr': {'class': 'text-label'},'attr': {'class': 'form-control input-own'} }) }}
+                    </div>
+                </div>
+                <div class="row  br-own">
+                    <div class="col-md-5 pull-left">
+                        <label class="text-label">Ciudad:</label>
+                        {{ form_widget(form.cliente.ciudad, { 'label_attr': {'class': 'text-label'},'attr': {'class': 'form-control input-own'} }) }}
+                    </div>
+                    <div class="col-md-5 pull-left">
+                        <label class="text-label">Estado:</label>
+                        {{ form_widget(form.cliente.estado, { 'label_attr': {'class': 'text-label'},'attr': {'class': 'form-control input-own'} }) }}
+                    </div>
+                </div>
+                <div class="row  br-own">
+                    <div class="col-md-5 pull-left">
+                        <label class="text-label">Pa&iacute;s:</label>
+                        {{ form_widget(form.cliente.pais, { 'label_attr': {'class': 'text-label'},'attr': {'class': 'form-control input-own'} }) }}
+                    </div>
+                    <div class="col-md-5 pull-left">
+                        <label class="text-label">Zip:</label>
+                        {{ form_widget(form.cliente.zip, { 'label_attr': {'class': 'text-label'},'attr': {'class': 'form-control input-own'} }) }}
+                    </div>
+                </div>
+                <div class="row  br-own">
+                    <div class="col-md-5 pull-left">
+                        <label class="text-label">Cantidad personas:</label>
+                        {{ form_widget(form.cliente.cantidadPersonas, { 'label_attr': {'class': 'text-label'},'attr': {'class': 'form-control input-own'} }) }}
+                    </div>
+                    <div class="col-md-5 pull-left">
+                        <div class="checkbox">
+                            <label>
+                                {{ form_widget(form.cliente.enHotel, { 'label_attr': {'class': 'text-label'}}) }} En
+                                Hotel:
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-1">
+                        {% include 'CraueFormFlowBundle:FormFlow:buttons.html.twig' %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                {% include 'AppBundle:default:lastminutecars.html.twig' %}
+            </div>
+        </div>
+
+    {% elseif  flow.getCurrentStepNumber() == 4 %}
+        {% set selected2 = "text-seccion-step-number" %}
+        {% set selected4 = "text-seccion-step-number" %}
+        {% set selected3 = "text-seccion-step-number-select" %}
+        <div class="col-md-12">
+            <div class="col-md-9 br-own">
+                <div class="br-own"></div>
+                <div class="col-md-6">
+                    <div class="list-group br-own">
+                        <a class="list-group-item hover-item"><span
+                                    class="text-information">{{ 'page.testimonials.title.nombre' |  trans }}: </span><span
+                                    class="text-information-data">{{ formData.cliente.nombre }}</span></a>
+                        <a class="list-group-item hover-item"><span
+                                    class="text-information">Apellidos: </span><span
+                                    class="text-information-data">{{ formData.cliente.apellido }}</span></a>
+                        <a class="list-group-item hover-item"><span
+                                    class="text-information">Fecha Nacimiento: </span><span
+                                    class="text-information-data">{{ formData.cliente.fechaNacimiento|date('Y-m-d H:i:s') }}</span></a>
+                        <a class="list-group-item hover-item"><span
+                                    class="text-information">Compa&ntilde;&iacute;a: </span><span
+                                    class="text-information-data">{{ formData.cliente.compania }}</span></a>
+                        <a class="list-group-item hover-item"><span
+                                    class="text-information">Tel&eacute;fono: </span><span
+                                    class="text-information-data">{{ formData.cliente.telefono }}</span></a>
+                        <a class="list-group-item hover-item"><span
+                                    class="text-information">Correo: </span><span
+                                    class="text-information-data">{{ formData.cliente.correo }}</span></a>
+                        <a class="list-group-item hover-item"><span class="text-information">Fax: </span><span
+                                    class="text-information-data">{{ formData.cliente.fax }}</span></a>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="list-group br-own">
+
+                        <a class="list-group-item hover-item"><span
+                                    class="text-information">Direcci&oacute;n: </span><span
+                                    class="text-information-data">{{ formData.cliente.direccion }}</span></a>
+                        <a class="list-group-item hover-item"><span class="text-information">Ciudad: </span><span
+                                    class="text-information-data">{{ formData.cliente.ciudad }}</span></a>
+                        <a class="list-group-item hover-item"><span class="text-information">Estado: </span><span
+                                    class="text-information-data">{{ formData.cliente.estado }}</span></a>
+                        <a class="list-group-item hover-item"><span class="text-information">Pa&iacute;s: </span><span
+                                    class="text-information-data">{{ formData.cliente.pais }}</span></a>
+                        <a class="list-group-item hover-item"><span class="text-information">Zip: </span><span
+                                    class="text-information-data">{{ formData.cliente.zip }}</span></a>
+                        <a class="list-group-item hover-item"><span
+                                    class="text-information">Cantidad de Personas: </span><span
+                                    class="text-information-data">{{ formData.cliente.cantidadPersonas }}</span></a>
+                        <a class="list-group-item hover-item"><span class="text-information">Estar&aacute;
+                                en hotel: </span><span
+                                    class="text-information-data">
+                        {% if formData.cliente.enHotel == true %}
+                            {{ "Sí" }}
+                        {% else %}
+                            {{ "No" }}
+                        {% endif %}
+                    </span></a>
+
+
+                    </div>
+                </div>
+
+                {% if formData.accesorios != "empty" %}
+                    <div class="col-md-12 seccion-header-blue br-own">
+                        <h2 style=" font-size: 10pt; margin-top: 10px">Cobertura y Seguro</h2>
+
+                    </div>
+                    {% for acc in formData.accesorios %}
+                        <div class="col-md-6">
+                            <p><strong class="text-information-data">{{ acc.nombre }}</strong></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p>${{ acc.precio }} USD</p>
+                        </div>
+                    {% endfor %}
+                    {% for seg in formData.seguros %}
+                        <div class="col-md-6">
+                            <p><strong class="text-information-data">{{ seg.nombre }}</strong></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p>${{ seg.precio }} USD</p>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p><strong class="text-red-t br-own-top marg-general">No hay Coberturas ni Seguros reservados, le
+                            sugerimos amablemente que se decida por alguno de ellos.</strong></p>
+                {% endif %}
+
+
+            </div>
+            <div class="col-md-3">
+                {#{% include 'AppBundle:default:lastminutecars.html.twig' %}#}
+                <table class="table table-bordered table-striped">
+                    <ul class="list-group">
+                        <li class="list-group-item list-group-comp-car-border text-center">
+                            <div><img class="img-car-show-lat"
+                                      src="{{ asset('uploads/images/products/') }}{{ formData.auto.image }}">
+                            </div>
+                        </li>
+                        <li class="list-group-item list-group-comp-car-border">
+                            <p>
+                                <b class="text-information-data">Entrada: </b> {{ formData.lugarRecogida }}
+                            </p>
+                            <p>
+                                <b class="text-information-data">Retorno: </b> {{ formData.lugarRegreso }}
+                            </p>
+                            <p>
+                                <b class="text-information-data">Fecha
+                                    Entrada: </b> {{ formData.fechaInicio|date('Y-m-d H:i') }}
+                            </p>
+                            <p>
+                                <b class="text-information-data">Fecha
+                                    Retorno: </b> {{ formData.fechaFin|date('Y-m-d H:i') }}
+                            </p>
+                            <p>
+                                <b class="text-information-data">Auto: </b> {{ formData.auto.modelo }}
+                            </p>
+                        </li>
+
+                        <li class="list-group-item button-component-rent comp-car-general-border ">
+                            <div class="button-component-rent">Precio Total
+                            </div>
+
+                        </li>
+                        <li class="list-group-item text-center comp-car-general-border">
+                            <div class="text-total-price">
+                                {{ formData.total }} USD
+                            </div>
+                        </li>
+                    </ul>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-md-offset-1">
+                {% include 'CraueFormFlowBundle:FormFlow:buttons.html.twig' %}
+            </div>
+        </div>
+        {#</div>#}
+
+    {% endif %}
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+{% endblock %}

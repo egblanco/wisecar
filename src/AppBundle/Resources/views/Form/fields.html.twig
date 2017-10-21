@@ -1,0 +1,26 @@
+{% extends 'form_div_layout.html.twig' %}
+
+{#{%- block repeated_row -%}
+    {#
+    No need to render the errors here, as all errors are mapped
+    to the first child (see RepeatedTypeValidatorExtension).
+    #}
+    {#% for child in form %}
+        <div class="form-group has-feedback">
+            {%- set type = child.type|default('text') -%}
+            <input type="{{ type }}" {{ block('widget_attributes') }} {#% if value is not empty %}value="{{ value }}" {% endif %#}{#/>
+            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+        </div>
+    {% endfor %}
+{%- endblock repeated_row -%#}
+
+{%- block form_row -%}
+    <div class="form-group has-feedback">
+        {{- form_errors(form) -}}
+        {{- form_widget(form) -}}
+        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+    </div>
+{%- endblock form_row -%}
+
+
+

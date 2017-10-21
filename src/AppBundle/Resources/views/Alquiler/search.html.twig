@@ -1,0 +1,50 @@
+{% extends '::base.html.twig' %}
+
+{% block content %}
+    <div class="col-md-12 bar-up-margin">
+        <div class="col-md-9 bar-up-padd">
+            <div class="col-md-12 seccion-header bar-up-padd-left">
+                <h1 class="bar-up-font-main">Search your Reservation. Then Modify - Cancel - View each one !!!</h1>
+            </div>
+        </div>
+        <div class="col-md-3 col-xs-12 text-right">
+            {% include 'AppBundle:default:redes.html.twig' %}
+        </div>
+    </div>
+
+    <div class="col-md-12 row br-own-top">
+
+        <div class="col-md-9">
+            <div class="col-md-12">
+                {% include '@App/default/notification.html.twig' %}
+            </div>
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+
+            <div class="row br-own">
+                <div class="col-md-6">
+                    <label class="text-label">C&oacute;digo:</label>
+                    {{ form_widget(form.codigo, { 'label_attr': {'class': 'text-label'},'attr': {'class': 'form-control input-own'} }) }}
+                </div>
+                <div class="col-md-6">
+                    <label class="text-label">Correo:</label>
+                    {{ form_widget(form.correo, { 'label_attr': {'class': 'text-label'},'attr': {'class': 'form-control input-own'} }) }}
+                </div>
+                <div class="br-own"></div>
+            </div>
+
+
+
+            {#{{ form_widget(form.correo, { 'label_attr': {'class': 'text-label'},'attr': {'class': 'form-control input-own'} }) }}#}
+            {{ form_rest(form) }}
+        </div>
+        <div class="col-md-3">
+            {% include 'AppBundle:default:lastminutecars.html.twig' %}
+        </div>
+
+    </div>
+
+
+
+    </ul>
+{% endblock %}

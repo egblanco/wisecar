@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>{% block title %}Wise Car {% endblock %}</title>
+    <link rel="stylesheet" href="{{ asset('bundles/easyadmin/stylesheet/bootstrap.min.css') }}">
+    {% block stylesheets %}{% endblock %}
+    <link rel="icon" type="image/x-icon" href="{{ asset('Favicon1.ico') }}"/>
+    <style>
+        body {
+            padding-top: 51px;
+        }
+        .text-center {
+            padding-top: 20px;
+        }
+        #sidebar {
+            height: 100%;
+            padding-right: 0;
+            padding-top: 20px;
+            background: #00a65a;
+        }
+        #sidebar .nav {
+            width: 95%;
+        }
+        #sidebar li {
+            border:0 #f2f2f2 solid;
+            border-bottom-width:1px;
+        }
+
+        .navbar-header{
+            width: 100%;
+            background: #00a65a;
+            height: 51px;
+        }
+        .header-green{
+            padding-right: 0;
+            padding-left: 0;
+        }
+
+        .navbar-inverse{
+          border: 0;
+        }
+
+        .navbar-brand-home{
+            display: none;
+        }
+
+        /* collapsed sidebar styles */
+        @media screen and (max-width: 767px) {
+            .row-offcanvas {
+                position: relative;
+                -webkit-transition: all 0.25s ease-out;
+                -moz-transition: all 0.25s ease-out;
+                transition: all 0.25s ease-out;
+            }
+            .row-offcanvas-right
+            .sidebar-offcanvas {
+                right: -41.6%;
+            }
+
+            .row-offcanvas-left
+            .sidebar-offcanvas {
+                left: -41.6%;
+            }
+            .row-offcanvas-right.active {
+                right: 41.6%;
+            }
+            .row-offcanvas-left.active {
+                left: 41.6%;
+            }
+            .sidebar-offcanvas {
+                position: absolute;
+                top: 0;
+                width: 41.6%;
+            }
+            #sidebar {
+                background-color:#00a65a;
+                padding-top:0;
+            }
+            #sidebar .nav>li {
+                color: #ddd;
+                background: linear-gradient(#3E3E3E, #383838);
+                border-top: 1px solid #484848;
+                border-bottom: 1px solid #2E2E2E;
+            }
+            #sidebar .nav>li:first-child {
+                border-top:0;
+            }
+            #sidebar .nav>li>a {
+                color: #ddd;
+            }
+            #sidebar .nav>li>a>img {
+                max-width: 14px;
+            }
+            #sidebar .nav>li>a:hover, #sidebar .nav>li>a:focus {
+                text-decoration: none;
+                background: linear-gradient(#373737, #323232);
+                color: #fff;
+            }
+            #sidebar .nav .caret {
+                border-top-color: #fff;
+                border-bottom-color: #fff;
+            }
+            #sidebar .nav a:hover .caret{
+                border-top-color: #fff;
+                border-bottom-color: #fff;
+            }
+
+            .navbar-header{
+                background: transparent;
+            }
+            .navbar-brand-home{
+                display: inherit;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="page-container">
+
+    <!-- top navbar -->
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-sm-3 header-green">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="offcanvas" data-target=".sidebar-nav">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand navbar-brand-home" href="#">Bootstrap theme</a>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-9">
+                    <div id="navbar" class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav">
+                            <li class="active"><a href="#">Home</a></li>
+                            <li><a href="#about">About</a></li>
+                            <li><a href="#contact">Contact</a></li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">Action</a></li>
+                                    <li><a href="#">Another action</a></li>
+                                    <li><a href="#">Something else here</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li class="dropdown-header">Nav header</li>
+                                    <li><a href="#">Separated link</a></li>
+                                    <li><a href="#">One more separated link</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div><!--/.nav-collapse -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row row-offcanvas row-offcanvas-left">
+            <!-- sidebar -->
+            <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+                <ul class="nav">
+                    <li class="active"><a href="#">Home</a></li>
+                    <li><a href="#">Link 1</a></li>
+                    <li><a href="#">Link 2</a></li>
+                    <li><a href="#">Link 3</a></li>
+                    <li><a href="#" data-toggle="collapse" data-target="#sub1">Link 4 (submenu)</a>
+                        <ul class="nav collapse" id="sub1">
+                            <li><a href="#">Sub Link 1</a></li>
+                            <li><a href="#">Sub Link 2</a></li>
+                            <li><a href="#">Sub Link 3</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Link 5</a></li>
+                </ul>
+            </div>
+
+            <!-- main area -->
+            <div class="col-xs-12 col-sm-9">
+                <h1>Shrink Width to Collapse Sidebar</h1>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus in nisi eu arcu tempus vehicula.
+                    Nulla faucibus cursus metus in sagittis. Nunc elit leo, imperdiet in ligula in, euismod varius est.
+                    Aenean pellentesque lorem a porttitor placerat. Vestibulum placerat nunc ac rutrum fringilla. Donec
+                    arcu leo, tempus adipiscing volutpat id, congue in purus. Pellentesque scelerisque mattis nibh vel
+                    semper. Sed a risus purus. Fusce pulvinar, velit eget rhoncus facilisis, enim elit vulputate nisl, a
+                    euismod diam metus eu enim. Nullam congue justo vitae justo accumsan, sit amet malesuada nulla sagittis.
+                    Nam neque tellus, tristique in est vel, sagittis congue turpis. Aliquam nulla lacus, laoreet dapibus
+                    odio vitae, posuere volutpat magna. Nam pulvinar lacus in sapien feugiat, sit amet vestibulum enim
+                    eleifend. Integer sit amet ante auctor, lacinia sem quis, consectetur nulla.</p>
+
+                <p>Vestibulum porttitor massa eget pellentesque eleifend. Suspendisse tempor, nisi eu placerat auctor,
+                    est erat tempus neque, pellentesque venenatis eros lorem vel quam. Nulla luctus malesuada porttitor.
+                    Fusce risus mi, luctus scelerisque hendrerit feugiat, volutpat gravida nisi. Quisque facilisis risus
+                    in lacus sagittis malesuada. Suspendisse non purus diam. Nunc commodo felis sit amet tortor
+                    adipiscing varius. Fusce commodo nulla quis fermentum hendrerit. Donec vulputate, tellus sed
+                    venenatis sodales, purus nibh ullamcorper quam, sit amet tristique justo velit molestie lorem.</p>
+
+                <p>Fusce sollicitudin lacus lacinia mi tincidunt ullamcorper. Aenean velit ipsum, vestibulum nec
+                    tincidunt eu, lobortis vitae erat. Nullam ultricies fringilla ultricies. Sed euismod nibh quis
+                    tincidunt dapibus. Nulla quam velit, porta sit amet felis eu, auctor fringilla elit. Donec
+                    convallis tincidunt nibh, quis pellentesque sapien condimentum a. Phasellus purus dui, rhoncus
+                    id suscipit id, ornare et sem. Duis aliquet posuere arcu a ornare. Pellentesque consequat libero
+                    id massa accumsan volutpat. Fusce a hendrerit lacus. Nam elementum ac eros eu porttitor.
+                    Phasellus enim mi, auctor sit amet luctus a, commodo fermentum arcu. In volutpat scelerisque
+                    quam, nec lacinia libero.</p>
+
+                <p>Aliquam a lacinia orci, iaculis porttitor neque. Nullam cursus dolor tempus mauris posuere, eu
+                    scelerisque sem tincidunt. Praesent blandit sapien at sem pulvinar, vel egestas orci varius.
+                    Praesent vitae purus at ante aliquet luctus vel quis nibh. Mauris id nulla vitae est lacinia
+                    rhoncus a vel justo. Donec iaculis quis sapien vel molestie. Aliquam sed elementum orci.
+                    Vestibulum tristique tempor risus et malesuada. Sed eget ligula sed quam placerat dapibus.
+                    Integer accumsan ac massa at tempus.</p>
+
+            </div><!-- /.col-xs-12 main -->
+        </div><!--/.row-->
+    </div><!--/.container-->
+</div><!--/.page-container-->
+<script src="{{ asset('bundles/easyadmin/javascript/jquery.min.js') }}"></script>
+<script src="{{ asset('bundles/easyadmin/javascript/bootstrap.min.js') }}"></script>
+<script src="{{ asset('bundles/easyadmin/javascript/bootstrap-toggle.min.js') }}"></script>
+<script>
+    $(document).ready(function() {
+        $('[data-toggle=offcanvas]').click(function() {
+            $('.row-offcanvas').toggleClass('active');
+        });
+        $()
+    });
+</script>
+</body>
+{% block javascripts %}{% endblock %}
+</html>

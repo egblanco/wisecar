@@ -1,0 +1,86 @@
+base.locale.es: Español
+base.locale.en: Inglés
+base.locale.fr: Francés
+
+notification.contact_thanks: "Su mensaje será atendido proximamente. Gracias por contactar a nuestro equipo."
+
+Previous : Anterior
+Next : Siguiente
+
+sidebar.main.carRental : renta de autos
+sidebar.main.home : inicio
+sidebar.main.car : autos
+sidebar.main.rates : temporadas
+sidebar.main.wiseDeals : wise deals
+sidebar.main.faqs : faqs
+sidebar.main.travelTips : consejos
+sidebar.main.testimonials : testimonios
+sidebar.main.contactUs : contáctenos
+sidebar.main.reasMore : Leer más
+
+base.footer.rentalCarService : Renta de autos en
+base.footer.dropOff : Un descuento aplicado al número de días rentados
+base.footer.share : Compartir
+base.footer.signUp : Registrarse
+base.footer.signIn : Autenticarse
+base.footer.logout : Salir
+
+form.lastminute.title : último minuto
+form.lastminute.selectyour : escoja su auto
+form.lastminute.ratesare : precios por semana en USD
+form.lastminute.validFor : Válido por
+form.lastminute.to : hasta
+form.lastminute.select : seleccione
+
+page.index.title.makeNow : haga su reservación ahora
+page.index.title.welcome : BIENVENIDO A WISE RENTAL
+page.index.title.findUs : Encuéntrenos
+page.index.title.wiseOffers : ofertas wise
+page.index.title.gallery : galería
+page.index.title.careAbout : cuidamos de usted - precios bajos garantizados - EQUIREMENTS - Localización -  servicios de conexión - rental priced
+page.index.title.whyShould : por qué debo rentar un auto durante mi visita a méxico
+
+page.cars.title.wiseCar : WISE CAR RENTAL, escoja su auto ahora
+page.cars.title.perDay : p/día
+page.cars.title.perWeek : p/sem
+page.cars.title.yes : SÍ
+page.cars.title.bigpack : Maletas grandes
+page.cars.title.littlepack : Maletas pequeñas
+
+page.rates.title.lowestRate : Las ofertas más baratas ahora
+page.rates.title.carModel : Modelo
+page.rates.title.day : día
+page.rates.title.week : semana
+
+page.great.title.getWise : mejores ofertas con nosotros
+page.great.title.getFrom : obtenga de 10 - 15% de descuento en su próxima renta de auto
+
+page.faqs.title.seek : busque su ingeniosa respuesta aquí
+page.faqs.title.before : antes de iniciar su viaje le brindamos algunos consejos inteligentes que le ayudarán en su viaje por méxico
+
+page.testimonials.title.maketestimonial : haga su comentario sabio sobre
+page.testimonials.title.client : Cliente
+page.testimonials.title.sendacomment : envíe un comentario
+page.testimonials.title.nombre : Nombre
+page.testimonials.title.correo : Correo
+page.testimonials.title.notpubliccorreo : Correo no público
+page.testimonials.title.servicio : Servicio
+page.testimonials.title.titulo : Título
+page.testimonials.title.texto : Texto
+page.testimonials.title.enviar : enviar
+page.testimonials.title.limpiar : limpiar
+
+reservation.view : Ver
+reservation.modify : Modificar
+reservation.cancel : Cancelar
+reservation.step : PASO
+
+reservation.form.pickup_location : Lugar de recogida
+reservation.form.pickup_date : Fecha - Hora Recogida
+reservation.form.returningSameLocation : Retorno al mismo lugar (No seleccionar para un lugar diferente)
+reservation.form.returnDate : Fecha - Hora de retorno
+reservation.form.returnPlace : Lugar de retorno
+reservation.form.carType : Tipo de carro
+reservation.form.code : Código
+reservation.form.go : Reservar
+

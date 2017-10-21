@@ -1,0 +1,78 @@
+{% extends '::base.html.twig' %}
+
+{% block javascripts %}
+    <script>
+        $(function () {
+            $(document).tooltip({
+                position: {
+                    my: "center bottom-20",
+                    at: "center top",
+                    using: function (position, feedback) {
+                        $(this).css(position);
+                        $("<div>")
+                                .addClass("arrow")
+                                .addClass(feedback.vertical)
+                                .addClass(feedback.horizontal)
+                                .appendTo(this);
+                    }
+                }
+            });
+        });
+        $(function () {
+            $(document).tooltip({
+                items: "img, [data-geo], [title]",
+                content: function () {
+                    var element = $(this);
+                    if (element.is("[data-geo]")) {
+                        var text = element.text();
+                        return "<img class='map' alt='" + text +
+                                "' src='http://localhost/symfony/2.7/install/source/WiseCar/web/bundles/app/frontend/icons/icon114x1142.png" +
+
+                                "'>";
+                    }
+                    if (element.is("[title]")) {
+                        return element.attr("title");
+                    }
+                    if (element.is("img")) {
+                        return element.attr("alt");
+                    }
+                }
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block activelicars %}{{ "active-li" }}{% endblock %}
+{% block activelicarsimage %}
+    <span class='hidden-xs'><img class="arrow-side-bar" src='{{ asset('bundles/app/frontend/general/arrow-li.png') }}'></span>
+{% endblock %}
+
+{% block content %}
+
+    <div class="col-md-12 bar-up-margin">
+        <div class="col-md-9 bar-up-padd">
+            <div class="col-md-12 seccion-header bar-up-padd-left">
+                <h1 class="bar-up-font-main">wise car rental select your car now!!!</h1>
+            </div>
+        </div>
+        <div class="col-md-3 col-xs-12 text-right">
+            {% include 'AppBundle:default:redes.html.twig' %}
+        </div>
+    </div>
+    <div class="col-md-12 row">
+        <div class="col-md-12 marg-general">
+            <div class="sub-general-font top-component-font-up ">why should i rent a car
+                during my visit to cancun, mexico?
+            </div>
+            <p>
+                zczxczxczxcz Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+                rem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+                rem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+                rem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+                rem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+                rem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+            </p>
+        </div>
+    </div>
+
+{% endblock %}

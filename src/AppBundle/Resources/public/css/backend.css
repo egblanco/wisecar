@@ -1,0 +1,27 @@
+.navbar-custom-menu .user-menu{
+    padding: 0;
+}
+
+.navbar-nav>.user-menu>.dropdown-menu>.user-footer{
+    background-color: #55B588;
+}
+.navbar-nav>.user-menu>.dropdown-menu{
+    width: inherit;
+    min-width: inherit;
+}
+
+.navbar-custom-menu>.navbar-nav>li>.dropdown-menu{
+    right: 0;
+}
+
+.a2lix_translationsLocales{
+    margin-bottom: 15px;
+}
+
+.label-empty{
+    display: none;
+}
+
+.easyadmin-vich-image input[type="file"], .easyadmin-vich-file input[type="file"]{
+    padding-bottom: 7px;
+}

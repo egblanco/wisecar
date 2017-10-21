@@ -1,0 +1,72 @@
+{% extends '::base.html.twig' %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        $(function () {
+            $(document).ready(function () {
+                $('.bttimepicker').datetimepicker({
+                    sideBySide: false,
+                    format: 'DD/MM/YYYY HH:mm',
+                    toolbarPlacement: 'bottom',
+                    showClose: true,
+                });
+
+                $('#alquiler_primer_paso_samePlace').click(function () {
+                    $('#lugarRegreso').toggleClass('hidden');
+                });
+
+
+                setAutoCode($('#alquiler_primer_paso_auto'));
+                $('#alquiler_primer_paso_auto').on('change', function () {
+                    setAutoCode(this);
+                });
+
+                function setAutoCode(select) {
+                    var value = $('option:selected', select).attr('code');
+                    $('#alquiler_primer_paso_codigo').val(value);
+                }
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block activelitt %}{{ "active-li" }}{% endblock %}
+{% block activelittimage %}
+    <span class='hidden-xs'><img class="arrow-side-bar" src='{{ asset('bundles/app/frontend/general/arrow-li.png') }}'></span>
+{% endblock %}
+
+
+{% block content %}
+    <div class="col-md-12 bar-up-margin">
+        <div class="col-md-9 bar-up-padd">
+            <div class="col-md-12 seccion-header bar-up-padd-left">
+                <h1 class="bar-up-font-main">WISE TRAVEL TIPS HERE!!!</h1>
+            </div>
+        </div>
+        <div class="col-md-3 text-right">
+            {% include 'AppBundle:default:redes.html.twig' %}
+        </div>
+    </div>
+    <div class="col-md-12 row">
+        <div class="col-md-9">
+            <div class="sub-general-font top-component-font-up text-bold"
+            >before starting your trip we give you some smarts which help you with travelling around mexico in a wise
+                way!
+            </div>
+            {% for tip in tips %}
+                <div>
+                    <p class="faqs-order">{{ tip.translations[app.request.locale].titulo }}</p>
+                    <p class="p-faqs-order">{{ tip.translations[app.request.locale].texto }}</p>
+                    <div class="br-own"></div>
+                </div>
+            {% endfor %}
+            <div class="navigation">
+                {{ knp_pagination_render(tips) }}
+            </div>
+        </div>
+        <div class="col-md-3">
+            {% include 'AppBundle:default:lastminutecars.html.twig' %}
+        </div>
+    </div>
+
+{% endblock %}

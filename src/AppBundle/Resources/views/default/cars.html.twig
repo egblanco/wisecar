@@ -1,0 +1,170 @@
+{% extends '::base.html.twig' %}
+
+{% block javascripts %}
+    <script>
+        $(function () {
+            $(document).tooltip({
+                position: {
+                    my: "center bottom-20",
+                    at: "center top",
+                    using: function (position, feedback) {
+                        $(this).css(position);
+                        $("<div>")
+                                .addClass("arrow")
+                                .addClass(feedback.vertical)
+                                .addClass(feedback.horizontal)
+                                .appendTo(this);
+                    }
+                }
+            });
+        });
+        $(function () {
+            $(document).tooltip({
+                items: "img, [data-geo], [title]",
+                content: function () {
+                    var element = $(this);
+                    if (element.is("[data-geo]")) {
+                        var text = element.text();
+                        return "<img class='map' alt='" + text +
+                                "' src='http://localhost/symfony/2.7/install/source/WiseCar/web/bundles/app/frontend/icons/icon114x1142.png" +
+
+                                "'>";
+                    }
+                    if (element.is("[title]")) {
+                        return element.attr("title");
+                    }
+                    if (element.is("img")) {
+                        return element.attr("alt");
+                    }
+                }
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block activelicars %}{{ "active-li" }}{% endblock %}
+{% block activelicarsimage %}
+    <span class='hidden-xs'><img class="arrow-side-bar" src='{{ asset('bundles/app/frontend/general/arrow-li.png') }}'></span>
+{% endblock %}
+
+{% block content %}
+
+    <div class="col-md-12 bar-up-margin">
+        <div class="col-md-9 bar-up-padd">
+            <div class="col-md-12 seccion-header bar-up-padd-left">
+                <h1 class="bar-up-font-main">{{ 'page.cars.title.wiseCar' |  trans }}!!!</h1>
+            </div>
+        </div>
+        <div class="col-md-3 col-xs-12 text-right">
+            {% include 'AppBundle:default:redes.html.twig' %}
+        </div>
+    </div>
+    <div class="col-md-12 row">
+        <div class="col-md-12 marg-general">
+            <div class="sub-general-font top-component-font-up ">{{ 'page.index.title.whyShould' |  trans }}??
+            </div>
+            <p>
+                zczxczxczxcz Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+                rem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+                rem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+                rem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+                rem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+                rem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+            </p>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div>
+            <hr class="hr-content">
+        </div>
+    </div>
+    <div class="col-md-12">
+        {% for ofertaAuto in cars %}
+                <div class="col-md-6 col-sm-6  col-lg-4">
+                    <table class="table table-bordered table-striped">
+                        <ul class="list-group">
+                            <li class="list-group-item list-group-comp-car-border">
+                                <div class="top-component-font-up-car">{{ ofertaAuto.auto.modelo }}</div>
+                                <div>
+                                    <span class="font-price-day-week">{{ ofertaAuto.precio }}</span>
+                                    <span class="label label-warning">{{ 'page.cars.title.perDay' |  trans }}</span>
+                                    <span class="hidden-xs hidden-sm hidden-md padding-component-ri"> </span>
+                                    <span class="font-price-day-week">{{ ofertaAuto.semanal }}</span>
+                                    <span class="label label-warning">{{ 'page.cars.title.perWeek' |  trans }}</span>
+                                </div>
+                            </li>
+                            <li class="list-group-item list-group-comp-car">
+                                <div>
+                            <span>
+                                <img class="img-comp-car" title={{ ofertaAuto.auto.pasajeros }}
+                                src="{{ asset('bundles/app/frontend/icons/cUser.png') }}"
+                                     onmouseover="this.src='{{ asset('bundles/app/frontend/icons/cUserRed.png') }}'"
+                                     onmouseout="this.src='{{ asset('bundles/app/frontend/icons/cUser.png') }}';">
+                                {#<a href="#" title="That's what this widget is">Tooltips</a>#}
+                            </span>
+                            <span>
+
+                                <img class="img-comp-car"
+                                     title={{ ofertaAuto.auto.transmision }} src="{{ asset('bundles/app/frontend/icons/cDir.png') }}"
+                                     onmouseover="this.src='{{ asset('bundles/app/frontend/icons/cDirRed.png') }}'"
+                                     onmouseout="this.src='{{ asset('bundles/app/frontend/icons/cDir.png') }}';">
+                            </span>
+                            <span>
+                                <img class="img-comp-car"
+                                        {% if ofertaAuto.auto.aire == true %}
+                                            title={{ 'page.cars.title.yes' |  trans }}
+                                        {% else %}
+                                            title="NO"
+                                        {% endif %}
+                                     src="{{ asset('bundles/app/frontend/icons/cAire.png') }}"
+                                     onmouseover="this.src='{{ asset('bundles/app/frontend/icons/cAireRed.png') }}'"
+                                     onmouseout="this.src='{{ asset('bundles/app/frontend/icons/cAire.png') }}';">
+                            </span>
+                            <span><img class="img-comp-car"
+                                        {% if ofertaAuto.auto.cdReproductor == true %}
+                                            title={{ 'page.cars.title.yes' |  trans }}
+                                        {% else %}
+                                            title="NO"
+                                        {% endif %}
+                                       src="{{ asset('bundles/app/frontend/icons/cMusic.png') }}"
+                                       onmouseover="this.src='{{ asset('bundles/app/frontend/icons/cMusicRed.png') }}'"
+                                       onmouseout="this.src='{{ asset('bundles/app/frontend/icons/cMusic.png') }}';">
+                            </span>
+                            <span><img class="img-comp-car"
+
+                                       title={{ ofertaAuto.auto.puertas }}
+
+                                       src="{{ asset('bundles/app/frontend/icons/cPuertas.png') }}"
+                                       onmouseover="this.src='{{ asset('bundles/app/frontend/icons/cPuertasRed.png') }}'"
+                                       onmouseout="this.src='{{ asset('bundles/app/frontend/icons/cPuertas.png') }}';">
+                            </span>
+                            <span>
+                                <img class="img-comp-car"
+                                     title='{{ 'page.cars.title.bigpack' |  trans }}: {{ ofertaAuto.auto.maletasGrandes }}  {{ 'page.cars.title.littlepack' |  trans }}:  {{ ofertaAuto.auto.maletasPequenas }}'
+                                     src="{{ asset('bundles/app/frontend/icons/cMaleta.png') }}"
+                                     onmouseover="this.src='{{ asset('bundles/app/frontend/icons/cMaletaRed.png') }}'"
+                                     onmouseout="this.src='{{ asset('bundles/app/frontend/icons/cMaleta.png') }}';">
+                            </span>
+
+                                </div>
+
+                            </li>
+                            <li class="list-group-item list-group-comp-car-border text-center">
+                                <div><img class="img-car-show-lat" src="{{ asset('uploads/images/products/') }}{{ ofertaAuto.auto.image }}">
+                                </div>
+                            </li>
+                            <li class="list-group-item button-component-rent">
+                                <div><a class="button-component-rent" role="button"
+                                        href="{{ path('wizard_start',{ 'id': ofertaAuto.auto.id, 'codigo': ofertaAuto.oferta.codigo  }) }}">{{ 'form.lastminute.select' |  trans }}</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </table>
+                </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+
+

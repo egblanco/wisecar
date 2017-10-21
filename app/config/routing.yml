@@ -1,0 +1,80 @@
+abd_blog:
+    resource: "@abdBlogBundle/Resources/config/routing.yml"
+    prefix:   /
+
+easy_admin_bundle:
+    resource: "@abdUserBundle/Controller/AdminController.php"
+    type:     annotation
+    prefix:   /admin
+
+abd_user:
+    resource: "@abdUserBundle/Resources/config/routing.yml"
+    prefix:   /
+
+remove_trailing_slash:
+    path: /{url}
+    defaults: { _controller: AppBundle:Default:removeTrailingSlash }
+    requirements:
+        url: .*/$
+    methods: [GET]
+
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation
+
+#fos_user:
+    #resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+
+homepage:
+    pattern:  /{_locale}
+    defaults: { _controller: AppBundle:Default:index , _locale: %locale% }
+    requirements:
+        _locale: en|es|fr
+
+cars:
+    pattern:  /{_locale}/cars
+    defaults: { _controller: AppBundle:Default:cars , _locale: %locale% }
+    requirements:
+        _locale: en|es|fr
+
+post:
+    pattern:  /{_locale}/post
+    defaults: { _controller: AppBundle:Default:post , _locale: %locale% }
+    requirements:
+        _locale: en|es|fr
+
+rates:
+    pattern:  /{_locale}/rates
+    defaults: { _controller: AppBundle:Default:rates , _locale: %locale% }
+    requirements:
+        _locale: en|es|fr
+
+greatDeals:
+    pattern:  /{_locale}/greatDeals
+    defaults: { _controller: AppBundle:Default:greatDeals , _locale: %locale% }
+    requirements:
+        _locale: en|es|fr
+
+travelTips:
+    pattern:  /{_locale}/travelTips
+    defaults: { _controller: AppBundle:Default:travelTips , _locale: %locale% }
+    requirements:
+        _locale: en|es|fr
+
+faqs:
+    pattern:  /{_locale}/faqs
+    defaults: { _controller: AppBundle:Default:faqs , _locale: %locale% }
+    requirements:
+        _locale: en|es|fr
+
+testimonials:
+    pattern:  /{_locale}/testimonials
+    defaults: { _controller: AppBundle:Default:testimonials , _locale: %locale% }
+    requirements:
+        _locale: en|es|fr
+
+contactUs:
+    pattern:  /{_locale}/contactUs
+    defaults: { _controller: AppBundle:Default:contactUs , _locale: %locale% }
+    requirements:
+        _locale: en|es|fr

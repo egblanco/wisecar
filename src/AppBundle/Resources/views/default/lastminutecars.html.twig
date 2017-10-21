@@ -1,0 +1,44 @@
+<div class="br-own-top"></div>
+<div class="br-own"></div>
+
+<div class="row pull-left comp-car-general">
+
+    <table class="table table-bordered table-striped">
+        <ul class="list-group margin-top-list-group-comp-cars">
+            <li class="list-group-item button-component last-minute-header comp-car-general-border">
+                <div><p class="last-minute-header hover-item-header" role="button">{{ 'form.lastminute.title' |  trans }}</p></div>
+            </li>
+        </ul>
+    </table>
+    {% for oa in results %}
+        {% if oa.oferta.activa == true %}
+
+
+        <table class="table table-bordered table-striped">
+            <ul class="list-group margin-top-list-group-comp-cars">
+                <li class="list-group-item top-component comp-car-general-border">
+                    <div class="top-component-font-up">{{ 'form.lastminute.selectyour' |  trans }}</div>
+                    <div class="br-own-top"></div>
+                    <div class="top-component-font-lit">{{ 'form.lastminute.ratesare' |  trans }}
+                    </div>
+                    <div class="br-own-top"></div>
+                    <div class="top-component-font-lit">{{ 'form.lastminute.validFor' |  trans }} {{ oa.oferta.fechaInicio|date("d/m/Y") }} {{ 'form.lastminute.to' |  trans }}
+                        {{ oa.oferta.fechaFin|date("d/m/Y") }}
+                    </div>
+                </li>
+                <li class="list-group-item second-component">
+                    <div class="second-component-font">{{ oa.auto.modelo }}</div>
+                    <div class="second-component-font">$ {{ oa.precio }} USD</div>
+
+                </li>
+                <li class="list-group-item">
+                    <div><img class="img-car-show-lat" src="{{ asset('uploads/images/products/') }}{{ oa.auto.image }}"></div>
+                </li>
+                <li class="list-group-item button-component comp-car-general-border">
+                    <div><a class="button-component" role="button" href="{{ path('wizard_start',{ 'id': oa.auto.id, 'codigo': oa.oferta.codigo }) }}">{{ 'form.lastminute.select' |  trans }}</a></div>
+                </li>
+            </ul>
+        </table>
+        {% endif %}
+    {% endfor %}
+</div>

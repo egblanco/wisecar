@@ -1,0 +1,6 @@
+services:
+    abdielcs.form.registration:
+            class: abd\UserBundle\Form\RegistrationType
+            arguments: [%fos_user.model.user.class%]
+            tags:
+                - { name: form.type, alias: abd_user_registration }

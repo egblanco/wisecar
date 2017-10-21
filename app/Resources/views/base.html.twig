@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="{{ app.request.locale }}">
+<head>
+    <meta charset="UTF-8"/>
+    <title>{% block title %}Wise Car {% endblock %}</title>
+    {% stylesheets filter='?yui_css, cssrewrite' output='bundles/app/css/combined.css'
+    'bundles/app/css/jquery.ui.tooltip.css'
+    'bundles/easyadmin/stylesheet/adminlte.min.css'
+    'bundles/easyadmin/stylesheet/bootstrap.min.css'
+    'bundles/app/css/frontend.css'
+    'bundles/app/css/bootstrap-datetimepicker.min.css'
+    'bundles/easyadmin/stylesheet/font-awesome.min.css'
+    'bundles/starrating/css/rating.css'
+    '@CraueFormFlowBundle/Resources/assets/css/buttons.css'%}
+        <link rel="stylesheet" type="text/css" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+
+    {% javascripts filter='?yui_js' output='bundles/app/js/combined.js'
+    '@EasyAdminBundle/Resources/public/javascript/jquery.min.js'
+    '@EasyAdminBundle/Resources/public/javascript/bootstrap.min.js'
+    '@EasyAdminBundle/Resources/public/javascript/bootstrap-toggle.min.js'
+    '@AppBundle/Resources/public/js/moment-with-locales.min.js'
+    '@AppBundle/Resources/public/js/bootstrap-datetimepicker.min.js'
+    '@AppBundle/Resources/public/js/jquery.ui.core.js'
+    '@AppBundle/Resources/public/js/jquery.ui.widget.js'
+    '@AppBundle/Resources/public/js/jquery.ui.position.js'
+    '@AppBundle/Resources/public/js/jquery.ui.tooltip.js'%}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    {#<link rel="stylesheet" href="{{ asset('bundles/app/css/jquery.ui.tooltip.css') }}">
+    <link rel="stylesheet" href="{{ asset('bundles/easyadmin/stylesheet/adminlte.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('bundles/easyadmin/stylesheet/bootstrap.min.css') }}">
+
+    <link rel="stylesheet" href="{{ asset('bundles/app/css/frontend.css') }}">
+    <link rel="stylesheet" href="{{ asset('bundles/app/css/bootstrap-datetimepicker.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('bundles/easyadmin/stylesheet/font-awesome.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/starrating/css/rating.css') }}"/>
+    {% stylesheets '@CraueFormFlowBundle/Resources/assets/css/buttons.css' %}
+    <link type="text/css" rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+    {% block stylesheets %}{% endblock %}#}
+    <link rel="icon" type="image/x-icon" href="{{ asset('Favicon1.ico') }}"/>
+</head>
+
+<body>
+<div class="page-container">
+
+    <!-- top navbar -->
+    <div class="navbar navbar-inverse navbar-default" role="navigation">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-sm-2 header-green">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="offcanvas" data-target=".sidebar-nav">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                                data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-9">
+                    <div id="navbar" class="navbar-collapse collapse navbar-right">
+                        <ul class="nav navbar-nav">
+                            <li class="dropdown">
+                                {#<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"#}
+                                {#aria-haspopup="true" aria-expanded="false">#}
+                                {#<img src="{{ asset('bundles/app/frontend/flags/'~app.request.locale~'.png') }}"/><span#}
+                                {#class="caret"></span></a>#}
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                   aria-haspopup="true" aria-expanded="false">
+                                    {{ ('base.locale.'~app.request.locale) |  trans }} <img
+                                            src="{{ asset('bundles/app/frontend/flags/'~app.request.locale~'.png') }}"/><span
+                                            class="caret"></span></a>
+
+                                <ul class="dropdown-menu locale-menu">
+
+                                    {#<li><a href="{{ path('change_language', { 'language': 'es' }) }}"><img#}
+                                    {#src="{{ asset('bundles/app/frontend/flags/es.png') }}"/> es</a></li>#}
+                                    {#<li><a href="{{ path('change_language', { 'language': 'fr' }) }}"><img#}
+                                    {#src="{{ asset('bundles/app/frontend/flags/fr.png') }}"/> fr</a></li>#}
+                                    {#<li><a href="{{ path('change_language', { 'language': 'en' }) }}"><img#}
+                                    {#src="{{ asset('bundles/app/frontend/flags/en.png') }}"> en</a></li>#}
+
+                                    <li>
+                                        <a href="{{ path('change_language', { 'language': 'es' }) }}">{{ 'base.locale.es' |  trans }}
+                                            <img src="{{ asset('bundles/app/frontend/flags/es.png') }}"/></a></li>
+                                    <li>
+                                        <a href="{{ path('change_language', { 'language': 'fr' }) }}">{{ 'base.locale.fr' |  trans }}
+                                            <img src="{{ asset('bundles/app/frontend/flags/fr.png') }}"/></a></li>
+                                    <li>
+                                        <a href="{{ path('change_language', { 'language': 'en' }) }}">{{ 'base.locale.en' |  trans }}
+                                            <img src="{{ asset('bundles/app/frontend/flags/en.png') }}"/></a></li>
+
+                                </ul>
+                            </li>
+                            {% if app.user %}
+                                <li><a href="{{ path('fos_user_security_logout') }}" class="font-navbar">{{ 'base.footer.logout' |  trans }}</a></li>
+                            {% else %}
+                                <li><a href="{{ path('fos_user_registration_register') }}" class="font-navbar"><span>{{ 'base.footer.signUp' |  trans }}</span></a>
+                                </li>
+                                <li><a href="{{ path('fos_user_security_login') }}" class="font-navbar">{{ 'base.footer.signIn' |  trans }}</a></li>
+                            {% endif %}
+                            <li>
+                                <input class="form-control find-input" type="text">
+                                <span class="glyphicon glyphicon-search form-control-feedback find-input-text"></span>
+                            </li>
+                        </ul>
+                    </div><!--/.nav-collapse -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row row-offcanvas row-offcanvas-left">
+            <!-- sidebar -->
+            <div class="col-xs-6 col-sm-2 sidebar-offcanvas" id="sidebar" role="navigation">
+                <ul class="nav">
+                    <li class="active"><a href="#"><img href="#"
+                                                        src="{{ asset('bundles/app/frontend/icons/icon114x1142.png') }}"
+                                                        class="img-responsive center-block img-banner"></a></li>
+                    <li>
+                        <div><a href="#" class="text-side-over center-block">WiSE</a></div>
+                    </li>
+                    <li>
+                        <div href="#" class="text-side-over-under"><h4>{{ 'sidebar.main.carRental' |  trans }}</h4></div>
+                    </li>
+                    <div>
+                        <hr class="hr-side">
+                    </div>
+                    <li>
+                        <div class="bar-side-elements"><a
+                                    href="{{ path('homepage') }}"
+                                    class="text-side-normal {% block activelihome %}{% endblock %}">{{ 'sidebar.main.home' |  trans }}</a>{% block activelihomeimage %}{% endblock %}
+                        </div>
+                    </li>
+                    <li>
+                        <div class="bar-side-elements"><a
+                                    href="{{ path('cars') }}"
+                                    class="text-side-normal {% block activelicars %}{% endblock %}">{{ 'sidebar.main.car' |  trans }}</a>{% block activelicarsimage %}{% endblock %}
+                        </div>
+                    </li>
+                    <li>
+                        <div class="bar-side-elements"><a
+                                    href="{{ path('rates') }}"
+                                    class="text-side-normal {% block activelirates %}{% endblock %}">{{ 'sidebar.main.rates' |  trans }}</a>{% block activeliratesimage %}{% endblock %}
+                        </div>
+                    </li>
+                    <li>
+                        <div class="bar-side-elements"><a
+                                    href="{{ path('greatDeals') }}"
+                                    class="text-side-normal {% block activeligd %}{% endblock %}">{{ 'sidebar.main.wiseDeals' |  trans }}</a>{% block activeligdimage %}{% endblock %}</div>
+                    </li>
+                    <li>
+                        <div class="bar-side-elements"><a href="{{ path('faqs') }}"
+                                                          class="text-side-normal {% block activelifa %}{% endblock %}">{{ 'sidebar.main.faqs' |  trans }}</a>{% block activelifaaimage %}{% endblock %}
+                        </div>
+                    </li>
+                    <li>
+                        <div class="bar-side-elements"><a
+                                    href="{{ path('travelTips') }}"
+                                    class="text-side-normal {% block activelitt %}{% endblock %}">{{ 'sidebar.main.travelTips' |  trans }}</a>{% block activelittimage %}{% endblock %}</div>
+                    </li>
+                    <li>
+                        <div class="bar-side-elements"><a
+                                    href="{{ path('testimonials') }}"
+                                    class="text-side-normal {% block activelites %}{% endblock %}">{{ 'sidebar.main.testimonials' |  trans }}</a>{% block activelitesimage %}{% endblock %}
+                        </div>
+                    </li>
+                    <li>
+                        <div class="bar-side-elements"><a
+                                    href="{{ path('contactUs') }}"
+                                    class="text-side-normal {% block activelicu %}{% endblock %}">{{ 'sidebar.main.contactUs' |  trans }}</a>{% block activelicuimage %}{% endblock %}</div>
+                    </li>
+                    <div>
+                        <hr class="hr-side">
+                    </div>
+                </ul>
+            </div>
+
+            <!-- main area -->
+            <div id="rigth-side" class="col-xs-12 col-sm-9 col-md-10 row">
+                {#<div class="container">#}
+                <div class="col-md-12 col-sm-9 col-xs-6 bg-img hidden-xs hidden-sm">
+                    <div class="col-md-12 col-sm-12 col-xs-12 ">
+                    </div>
+                </div>
+                {#{% block layer %}{% endblock %}#}
+                {% block content %}{% endblock %}
+                <div class="col-md-2"></div>
+                {#FOOTER#}
+                <div class="col-md-12 row footer-box">
+                    <div class="col-md-9">
+                        <p class="footer-text-over">{{ 'base.footer.rentalCarService' |  trans }} Yucatan</p>
+                        <p class="footer-text-under">Merida - Uxmal - Celestum - Progresso Beach -
+                            Telchac
+                            Puerto</p>
+
+                        <p class="footer-text-over">{{ 'base.footer.rentalCarService' |  trans }} Quintana Ro</p>
+                        <p class="footer-text-under">Merida - Uxmal - Celestum - Progresso Beach -
+                            Telchac
+                            Puerto</p>
+
+                        <p class="footer-text-over">{{ 'base.footer.rentalCarService' |  trans }} Campeche</p>
+                        <p class="footer-text-under">Merida - Uxmal - Celestum - Progresso Beach -
+                            Telchac
+                            Puerto</p>
+                        <div class="br-own"></div>
+                        <p class="footer-text-final">{{ 'base.footer.dropOff' |  trans }}</p>
+
+                    </div>
+                    <div class="col-md-3 footer-social">
+                        <div class="col-md-12 col-xs-4 back-black margin-social-down"><a target="_blank"
+                                                                                         href="http://www.facebook.com/sharer.php?s=100&p[url]=easywayrentacar.com"><img
+                                        class="icon-social-comun"
+                                        src="{{ asset('bundles/app/frontend/icons/iconFace.png') }}"/><span
+                                        class="font-navbar"> {{ 'base.footer.share' |  trans }}</span></a></div>
+
+                        <div class="col-md-12 col-xs-4 back-black margin-social-down"><a target="_blank"
+                                                                                         href="https://twitter.com/share"
+                                                                                         data-via="easywayrentacar"><img
+                                        class="icon-social-comun"
+                                        src="{{ asset('bundles/app/frontend/icons/twitIcon.png') }}"/><span
+                                        class="font-navbar"> {{ 'base.footer.share' |  trans }}</span></a></div>
+
+                        <div class="col-md-12 col-xs-4 back-black margin-social-down"><a target="_blank"
+                                                                                         href=" https://plus.google.com/share?url=easywayrentacar.com"><img
+                                        class="icon-social-comun"
+                                        src="{{ asset('bundles/app/frontend/icons/plusIcon.png') }}"/><span
+                                        class="font-navbar"> {{ 'base.footer.share' |  trans }}</span></a></div>
+                    </div>
+
+                    <div class="col-md-12 footer-copy-under hidden-xs hidden-sm">
+                        <p class="footer-copy">&copy; CopyRight</p>
+
+                    </div>
+
+                    <div class="col-md-12 hidden-lg hidden-md margin-top-copy">
+                        <p class="footer-copy margin-top-copy">&copy; CopyRight</p>
+
+                    </div>
+                </div>
+                {#</div>#}
+            </div><!-- /.col-xs-12 main -->
+        </div><!--/.row-->
+    </div><!--/.container-->
+</div><!--/.page-container-->
+
+
+{#<script src="{{ asset('bundles/easyadmin/javascript/jquery.min.js') }}"></script>
+<script src="{{ asset('bundles/easyadmin/javascript/bootstrap.min.js') }}"></script>
+<script src="{{ asset('bundles/easyadmin/javascript/bootstrap-toggle.min.js') }}"></script>
+<script src="{{ asset('bundles/app/js/moment-with-locales.min.js') }}"></script>
+<script src="{{ asset('bundles/app/js/bootstrap-datetimepicker.min.js') }}"></script>
+
+<script src="{{ asset('bundles/app/js/jquery.ui.core.js') }}"></script>
+<script src="{{ asset('bundles/app/js/jquery.ui.widget.js') }}"></script>
+<script src="{{ asset('bundles/app/js/jquery.ui.position.js') }}"></script>
+<script src="{{ asset('bundles/app/js/jquery.ui.tooltip.js') }}"></script>#}
+<script>
+    $(document).ready(function () {
+        $('[data-toggle=offcanvas]').click(function () {
+            $('.row-offcanvas').toggleClass('active');
+        });
+        $('#sidebar').css('height', $('#rigth-side').css('height'));
+        $(window).resize(function () {
+            $('#sidebar').css('height', $('#rigth-side').css('height'));
+        });
+    });
+</script>
+{% block javascripts %}{% endblock %}
+
+
+</body>
+{#{% block sidebar %}lklk{% endblock %}#}
+</html>

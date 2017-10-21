@@ -1,0 +1,353 @@
+{% extends '::base.html.twig' %}
+
+{% block javascripts %}
+    <script>
+        $(function () {
+            $(document).tooltip({
+                position: {
+                    my: "center bottom-20",
+                    at: "center top",
+                    using: function (position, feedback) {
+                        $(this).css(position);
+                        $("<div>")
+                                .addClass("arrow")
+                                .addClass(feedback.vertical)
+                                .addClass(feedback.horizontal)
+                                .appendTo(this);
+                    }
+                }
+            });
+        });
+        $(function () {
+            $(document).tooltip({
+                items: "img, [data-geo], [title]",
+                content: function () {
+                    var element = $(this);
+                    if (element.is("[data-geo]")) {
+                        var text = element.text();
+                        return "<img class='map' alt='" + text +
+                                "' src='http://localhost/symfony/2.7/install/source/WiseCar/web/bundles/app/frontend/icons/icon114x1142.png" +
+
+                                "'>";
+                    }
+                    if (element.is("[title]")) {
+                        return element.attr("title");
+                    }
+                    if (element.is("img")) {
+                        return element.attr("alt");
+                    }
+                }
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block activeligd %}{{ "active-li" }}{% endblock %}
+{% block activeligdimage %}
+    <span class='hidden-xs'><img class="arrow-side-bar" src='{{ asset('bundles/app/frontend/general/arrow-li.png') }}'></span>
+{% endblock %}
+
+
+{% block content %}
+    <div class="col-md-12 bar-up-margin">
+        <div class="col-md-9 bar-up-padd">
+            <div class="col-md-12 seccion-header bar-up-padd-left">
+                <h1 class="bar-up-font-main">{{ 'page.great.title.getWise' |  trans }}!!!</h1>
+            </div>
+        </div>
+        <div class="col-md-3 text-right">
+            {% include 'AppBundle:default:redes.html.twig' %}
+        </div>
+    </div>
+    <div class="col-md-12 row">
+        <div class="col-md-9">
+            <div class="col-md-12 marg-general padd-com-gd">
+                <div class="top-component-font-up special-font-great-deals">{{ 'page.great.title.getFrom' |  trans }}
+                </div>
+                <div class="br-own"></div>
+                <div class="col-md-10 text-center">
+                    <span><img class="icon-social-gd"
+                               src="{{ asset('bundles/app/frontend/icons/iconFace.png') }}"></span>
+                    <span><img class="icon-social-gd"
+                               src="{{ asset('bundles/app/frontend/icons/twitIcon.png') }}"></span>
+                    <span><img class="icon-social-gd"
+                               src="{{ asset('bundles/app/frontend/icons/plusIcon.png') }}"></span>
+
+                </div>
+
+                <div class="col-md-12">
+                    <br>
+                    <p>
+                        zczxczxczxcz Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a
+                        ante.
+                        rem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante. rem ipsum
+                        dolor
+                        sit amet, consectetur adipiscing eli
+                    </p>
+                    <p>
+                        zczxczxczxcz Lorem ipsum dolor sit amet, consectetur adipiscing elit. In
+                    </p>
+                    <p>
+                        zczxczxczxcz Lorem ipsum dolor sit amet, consectetur adipiscing elit. In
+                    </p>
+                    <p>
+                        zczxczxczxcz Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a
+                        ante.
+                        rem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante. rem ipsum
+                        dolor
+                        sit amet, consectetur adipiscing eli
+                    </p>
+                    <p>
+                        zczxczxczxcz Lorem ipsum dolor sit amet, consectetur adipiscing elit. In
+                    </p>
+                    <p class="gd-observ">
+                        zczxczxczxcz Lorem ipsum.</p>
+                    <div class="br-own"></div>
+                    <p class="gd-observ">
+                        zczxczxczxcz Lorem ipsumzczxczxczxcz Lorem ipsum
+                    </p>
+                </div>
+            </div>
+            <div class="row padd-com-gd">
+                {% for ofertaAuto in gd %}
+                        <div class="col-md-6 col-lg-6 col-xs-12 col-sm-12">
+
+                            <table class="table table-bordered table-striped">
+                                <ul class="list-group">
+                                    <li class="list-group-item list-group-comp-car-border">
+                                        <div class="text-center top-component-font-up-car col-md-12 gd-text-comp">
+                                            <span>{{ ofertaAuto.auto.modelo }}</span>
+                                            {#<span class="text-left" style="    background-color: #D23440;#}
+                                            {#color: #DEAE21;#}
+                                            {#padding-right: 20px;#}
+                                            {#padding-left: 20px;#}
+                                            {#padding-top: 5px;#}
+                                            {#padding-bottom: 5px;#}
+                                            {#margin-left: 25px;text-transform: uppercase"#}
+                                            {#>code:1000</span>#}
+                                        </div>
+                                        <div>
+                                            <span class="font-price-day-week">{{ ofertaAuto.precio }}</span>
+                                            <span class="label label-warning">{{ 'page.cars.title.perDay' |  trans }}</span>
+                                            <span class="hidden-xs hidden-sm hidden-md padding-component-ri"> </span>
+                                            <span class="font-price-day-week">{{ 'page.cars.title.perWeek' |  trans }}</span>
+                                            <span class="label label-warning">p/week</span>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item list-group-comp-car">
+                                        <div>
+                            <span>
+                                <img class="img-comp-car" title={{ ofertaAuto.auto.pasajeros }}
+                                src="{{ asset('bundles/app/frontend/icons/cUser.png') }}"
+                                     onmouseover="this.src='{{ asset('bundles/app/frontend/icons/cUserRed.png') }}'"
+                                     onmouseout="this.src='{{ asset('bundles/app/frontend/icons/cUser.png') }}';">
+                                {#<a href="#" title="That's what this widget is">Tooltips</a>#}
+                            </span>
+                            <span>
+
+                                <img class="img-comp-car"
+                                     title={{ ofertaAuto.auto.transmision }} src="{{ asset('bundles/app/frontend/icons/cDir.png') }}"
+                                     onmouseover="this.src='{{ asset('bundles/app/frontend/icons/cDirRed.png') }}'"
+                                     onmouseout="this.src='{{ asset('bundles/app/frontend/icons/cDir.png') }}';">
+                            </span>
+                            <span>
+                                <img class="img-comp-car"
+                                        {% if ofertaAuto.auto.aire == true %}
+                                            title="{{ 'page.cars.title.yes' |  trans }}"
+                                        {% else %}
+                                            title="NO"
+                                        {% endif %}
+                                     src="{{ asset('bundles/app/frontend/icons/cAire.png') }}"
+                                     onmouseover="this.src='{{ asset('bundles/app/frontend/icons/cAireRed.png') }}'"
+                                     onmouseout="this.src='{{ asset('bundles/app/frontend/icons/cAire.png') }}';">
+                            </span>
+                            <span><img class="img-comp-car"
+                                        {% if ofertaAuto.auto.cdReproductor == true %}
+                                            title="{{ 'page.cars.title.yes' |  trans }}"
+                                        {% else %}
+                                            title="NO"
+                                        {% endif %}
+                                       src="{{ asset('bundles/app/frontend/icons/cMusic.png') }}"
+                                       onmouseover="this.src='{{ asset('bundles/app/frontend/icons/cMusicRed.png') }}'"
+                                       onmouseout="this.src='{{ asset('bundles/app/frontend/icons/cMusic.png') }}';">
+                            </span>
+                            <span><img class="img-comp-car"
+
+                                       title={{ ofertaAuto.auto.puertas }}
+
+                                       src="{{ asset('bundles/app/frontend/icons/cPuertas.png') }}"
+                                       onmouseover="this.src='{{ asset('bundles/app/frontend/icons/cPuertasRed.png') }}'"
+                                       onmouseout="this.src='{{ asset('bundles/app/frontend/icons/cPuertas.png') }}';">
+                            </span>
+                            <span>
+                                <img class="img-comp-car"
+                                     title='{{ 'page.cars.title.bigpack' |  trans }}: {{ ofertaAuto.auto.maletasGrandes }}  {{ 'page.cars.title.littlepack' |  trans }}:  {{ ofertaAuto.auto.maletasPequenas }}'
+                                     src="{{ asset('bundles/app/frontend/icons/cMaleta.png') }}"
+                                     onmouseover="this.src='{{ asset('bundles/app/frontend/icons/cMaletaRed.png') }}'"
+                                     onmouseout="this.src='{{ asset('bundles/app/frontend/icons/cMaleta.png') }}';">
+                            </span>
+
+                                        </div>
+
+                                    </li>
+                                    <li class="list-group-item list-group-comp-car-border text-center">
+                                        <div><img class="img-car-show-lat text-center"
+                                                  src="{{ asset('uploads/images/products/') }}{{ ofertaAuto.auto.image }}">
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item button-component-rent">
+                                        <div><a class="button-component-rent" role="button" href="{{ path('wizard_start',{ 'id': ofertaAuto.auto.id, 'codigo': ofertaAuto.oferta.codigo }) }}">{{ 'form.lastminute.select' |  trans }}</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </table>
+                        </div>
+                    {#{% endif %}#}
+                {% endfor %}
+            </div>
+
+            {#<div class="row padd-com-gd">#}
+            {#<div class="col-md-6 col-lg-6 col-xs-12 col-sm-12">#}
+
+            {#<table class="table table-bordered table-striped">#}
+            {#<ul class="list-group">#}
+            {#<li class="list-group-item list-group-comp-car-border">#}
+            {#<div class="text-center top-component-font-up-car col-md-12 gd-text-comp">#}
+            {#<span>VW Jetta</span>#}
+            {#<span class="text-left" style="    background-color: #D23440;#}
+            {#color: #DEAE21;#}
+            {#padding-right: 20px;#}
+            {#padding-left: 20px;#}
+            {#padding-top: 5px;#}
+            {#padding-bottom: 5px;#}
+            {#margin-left: 25px;text-transform: uppercase"#}
+            {#>code:1000</span>#}
+            {#</div>#}
+            {#<div>#}
+            {#<span class="font-price-day-week">$ 18 </span>#}
+            {#<span class="label label-warning">p/day</span>#}
+            {#<span class="hidden-xs hidden-sm hidden-md padding-component-ri"> </span>#}
+            {#<span class="font-price-day-week">$ 98 </span>#}
+            {#<span class="label label-warning">p/week</span>#}
+            {#</div>#}
+            {#</li>#}
+            {#<li class="list-group-item text-center list-group-comp-car-border">#}
+            {#<div><img src="{{ asset('bundles/app/frontend/car/car.png') }}"></div>#}
+            {#</li>#}
+            {#<li class="list-group-item button-component-rent">#}
+            {#<div><a class="button-component-rent" role="button" href="#">select</a></div>#}
+            {#</li>#}
+            {#</ul>#}
+            {#</table>#}
+            {#</div>#}
+            {#<div class="col-md-6 col-lg-6 col-xs-12 col-sm-12">#}
+
+            {#<table class="table table-bordered table-striped">#}
+            {#<ul class="list-group">#}
+            {#<li class="list-group-item list-group-comp-car-border">#}
+            {#<div class="text-center top-component-font-up-car col-md-12 gd-text-comp">#}
+            {#<span>VW Jetta</span>#}
+            {#<span class="text-left" style="    background-color: #D23440;#}
+            {#color: #DEAE21;#}
+            {#padding-right: 20px;#}
+            {#padding-left: 20px;#}
+            {#padding-top: 5px;#}
+            {#padding-bottom: 5px;#}
+            {#margin-left: 25px;text-transform: uppercase"#}
+            {#>code:1000</span>#}
+            {#</div>#}
+            {#<div>#}
+            {#<span class="font-price-day-week">$ 18 </span>#}
+            {#<span class="label label-warning">p/day</span>#}
+            {#<span class="hidden-xs hidden-sm hidden-md padding-component-ri"> </span>#}
+            {#<span class="font-price-day-week">$ 98 </span>#}
+            {#<span class="label label-warning">p/week</span>#}
+            {#</div>#}
+            {#</li>#}
+            {#<li class="list-group-item text-center list-group-comp-car-border">#}
+            {#<div><img src="{{ asset('bundles/app/frontend/car/car.png') }}"></div>#}
+            {#</li>#}
+            {#<li class="list-group-item button-component-rent">#}
+            {#<div><a class="button-component-rent" role="button" href="#">select</a></div>#}
+            {#</li>#}
+            {#</ul>#}
+            {#</table>#}
+            {#</div>#}
+            {#</div>#}
+
+            {#<div class="row padd-com-gd">#}
+            {#<div class="col-md-6 col-lg-6 col-xs-12 col-sm-12">#}
+
+            {#<table class="table table-bordered table-striped">#}
+            {#<ul class="list-group">#}
+            {#<li class="list-group-item list-group-comp-car-border">#}
+            {#<div class="text-center top-component-font-up-car col-md-12 gd-text-comp">#}
+            {#<span>VW Jetta</span>#}
+            {#<span class="text-left" style="    background-color: #D23440;#}
+            {#color: #DEAE21;#}
+            {#padding-right: 20px;#}
+            {#padding-left: 20px;#}
+            {#padding-top: 5px;#}
+            {#padding-bottom: 5px;#}
+            {#margin-left: 25px;text-transform: uppercase"#}
+            {#>code:1000</span>#}
+            {#</div>#}
+            {#<div>#}
+            {#<span class="font-price-day-week">$ 18 </span>#}
+            {#<span class="label label-warning">p/day</span>#}
+            {#<span class="hidden-xs hidden-sm hidden-md padding-component-ri"> </span>#}
+            {#<span class="font-price-day-week">$ 98 </span>#}
+            {#<span class="label label-warning">p/week</span>#}
+            {#</div>#}
+            {#</li>#}
+            {#<li class="list-group-item text-center list-group-comp-car-border">#}
+            {#<div><img src="{{ asset('bundles/app/frontend/car/car.png') }}"></div>#}
+            {#</li>#}
+            {#<li class="list-group-item button-component-rent">#}
+            {#<div><a class="button-component-rent" role="button" href="#">select</a></div>#}
+            {#</li>#}
+            {#</ul>#}
+            {#</table>#}
+            {#</div>#}
+            {#<div class="col-md-6 col-lg-6 col-xs-12 col-sm-12">#}
+
+            {#<table class="table table-bordered table-striped">#}
+            {#<ul class="list-group">#}
+            {#<li class="list-group-item list-group-comp-car-border">#}
+            {#<div class="text-center top-component-font-up-car col-md-12 gd-text-comp">#}
+            {#<span>VW Jetta</span>#}
+            {#<span class="text-left" style="    background-color: #D23440;#}
+            {#color: #DEAE21;#}
+            {#padding-right: 20px;#}
+            {#padding-left: 20px;#}
+            {#padding-top: 5px;#}
+            {#padding-bottom: 5px;#}
+            {#margin-left: 25px;text-transform: uppercase"#}
+            {#>code:1000</span>#}
+            {#</div>#}
+            {#<div>#}
+            {#<span class="font-price-day-week">$ 18 </span>#}
+            {#<span class="label label-warning">p/day</span>#}
+            {#<span class="hidden-xs hidden-sm hidden-md padding-component-ri"> </span>#}
+            {#<span class="font-price-day-week">$ 98 </span>#}
+            {#<span class="label label-warning">p/week</span>#}
+            {#</div>#}
+            {#</li>#}
+            {#<li class="list-group-item text-center list-group-comp-car-border">#}
+            {#<div><img src="{{ asset('bundles/app/frontend/car/car.png') }}"></div>#}
+            {#</li>#}
+            {#<li class="list-group-item button-component-rent">#}
+            {#<div><a class="button-component-rent" role="button" href="#">select</a></div>#}
+            {#</li>#}
+            {#</ul>#}
+            {#</table>#}
+            {#</div>#}
+            {#</div>#}
+        </div>
+
+        <div class="col-md-3">
+            {% include 'AppBundle:default:lastminutecars.html.twig' %}
+        </div>
+    </div>
+
+{% endblock %}

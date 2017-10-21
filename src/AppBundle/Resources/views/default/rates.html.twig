@@ -1,0 +1,75 @@
+{% extends '::base.html.twig' %}
+
+{% block activelirates %}{{ "active-li" }}{% endblock %}
+{% block activeliratesimage %}
+    <span class='hidden-xs hidden-sm'><img class="arrow-side-bar"
+                                           src='{{ asset('bundles/app/frontend/general/arrow-li.png') }}'></span>
+{% endblock %}
+
+{% block content %}
+
+    <div class="col-md-12 bar-up-margin">
+        <div class="col-md-9 bar-up-padd">
+            <div class="col-md-12 seccion-header bar-up-padd-left">
+                <h1 class="bar-up-font-main">{{ 'page.rates.title.lowestRate' |  trans }}!!!</h1>
+            </div>
+        </div>
+        <div class="col-md-3 col-xs-12 text-right">
+            {% include 'AppBundle:default:redes.html.twig' %}
+        </div>
+    </div>
+
+    <div class="col-md-12 row">
+        <div class="col-md-9">
+            <div class="table-responsive margin-top-table-rates">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <td class="back-white"></td>
+                        {% set cont = 0 %}
+                        {% set class = ["table-blue-header","table-red-header","table-yelow-header","table-blue-header","table-red-header","table-yelow-header"] %}
+                        {% for oferta in ofertas %}
+                            <TD COLSPAN=2 class="header-up-table {{ class[cont] }}">
+                                {{  (oferta.translations | default_lang (app.request.locale)).nombre }}
+                            </TD>
+                            {% set cont = cont + 1 %}
+                        {% endfor %}
+                    </tr>
+
+
+                    <tr>
+                        <th class="header-up-big-table text-center">{{ 'page.rates.title.carModel' |  trans }}</th>
+                        {% for oferta in ofertas %}
+                            <th class="header-up-mid-table table-day">day</th>
+                            <th class="header-up-mid-table table-week">week</th>
+                        {% endfor %}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% set cont = 0 %}
+                    {% set class = ["text-blue-t","text-red-t","text-yellow-t","text-blue-t","text-red-t","text-yellow-t"] %}
+                    {% for auto in autos %}
+                        <tr>
+                            <td class="table-text-left"><a class="table-text-left" role="button" href="{#{{ path('wizard_start',{ 'id': auto.id, 'codigo': auto. }) }}#}">{{ auto }}</a></td>
+                            {% for oferta in ofertas %}
+                                <td class="{{ class[cont] }}">{{ (oferta.getOfertaAutoByAuto(auto.id)).precio }}</td>
+                                <td class="{{ class[cont] }}">{{ (oferta.getOfertaAutoByAuto(auto.id)).semanal }}</td>
+                                {% set cont = cont + 1 %}
+                            {% endfor %}
+                        </tr>
+                        {% set cont = 0 %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <div class="navigation">
+                    {{ knp_pagination_render(autos) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+
+            {% include 'AppBundle:default:lastminutecars.html.twig' %}
+
+        </div>
+    </div>
+{% endblock %}

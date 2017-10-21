@@ -1,0 +1,11 @@
+{% for alquilerArticulo in value %}
+    {% set articulo = alquilerArticulo.articulo %}
+    {% if articulo is auto  %}
+        {% set color = 'primary' %}
+    {% elseif articulo is accesorio %}
+        {% set color = 'success' %}
+    {% else %}
+        {% set color = 'info' %}
+    {% endif %}
+    <span class="label label-{{ color }}">{{ articulo }}</span>
+{% endfor %}

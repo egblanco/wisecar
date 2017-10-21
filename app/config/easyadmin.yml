@@ -1,0 +1,342 @@
+easy_admin:
+    site_name: <img src="http://localhost/symfony/2.7/install/source/WiseCar/web/bundles/app/img/icons/transparent57x57.png" /> %site.name%
+    design:
+        assets:
+            css:
+                - 'bundles/app/css/backend.css'
+            favicon: '/bundles/app/img/icons/icon16x16.png'
+        brand_color: '#55B588'
+        menu:
+            - label: 'Alquiler'
+              icon: 'shopping-cart'
+              children: [{ entity: 'Alquiler', icon: 'calendar-check-o' },{ entity: 'Lugares', icon: 'map-marker' }]
+            - label: 'Ofertas'
+              icon: 'bullhorn'
+              children: [{ entity: 'Rates', icon: 'calendar' },{ entity: 'WiseDeals', icon: 'lightbulb-o' },{ entity: 'LastMinutes', icon: 'clock-o' }]
+            - label: 'Artículos'
+              icon: 'shopping-basket'
+              children: [{ entity: 'Autos', icon: 'car' },{ entity: 'Accesorios', icon: 'plug' },{ entity: 'Seguros', icon: 'life-bouy' }]
+            - label: 'Clasificaciones'
+              icon: 'sitemap'
+              children: [{ entity: 'AutoCategorias', icon: 'car' },{ entity: 'Transmisiones', icon: 'gears' }]
+            - label: 'Mensajes'
+              icon: 'comments-o'
+              children: [{ entity: 'Comentarios', icon: 'comment-o' },{ entity: 'Contacto', icon: 'envelope' }]
+            - label: 'Textos'
+              icon: 'file-text'
+              children: [{ entity: 'FAQ', icon: 'question' },{ entity: 'Tip', icon: 'lightbulb-o' }]
+            - label: 'Blog'
+              icon: 'wordpress'
+              children: [{ entity: 'Entradas', icon: 'file-word-o' }]
+            - label: 'Administracion'
+              icon: 'key'
+              children: [{ entity: 'Usuarios', icon: 'users' }]
+    formats:
+            date:     'd/m/Y'
+            time:     'H:i'
+            datetime: 'd/m/Y H:i:s'
+    disabled_actions: ['search']
+    list:
+        actions:
+            - { name: 'show', icon: 'search', label: false }
+            - { name: 'edit', icon: 'pencil', label: false }
+            - { name: 'delete', icon: 'trash', label: false }
+    entities:
+        Alquiler:
+            class: AppBundle\Entity\Alquiler
+            list:
+                actions: [{ name: 'alquiler_show',type: 'route', icon: 'search', label: false },{ name: 'delete', icon: 'trash', label: false },'-show','-new','-edit']
+                fields:
+                    - id
+                    - auto
+                    - fechaInicio
+                    - fechaFin
+                    - total
+            show:
+                actions: ['-edit']
+                fields:
+                    - id
+                    - auto
+                    - fechaInicio
+                    - fechaFin
+                    - { property: 'alquilerArticulos', template: 'articles.html.twig'}
+                    - total
+        Lugares:
+            class: AppBundle\Entity\Lugar
+            form:
+                fields:
+                    - { property: 'translations', type: 'a2lix_translations', label: 'Traducciones', type_options: { required: true } }
+                    - iva
+            list:
+                fields:
+                    - id
+                    - { property: 'nombreTranslation', label: 'Nombre' }
+                    - iva
+            show:
+                fields:
+                    - id
+                    - { property: 'nombreTranslation', label: 'Nombre' }
+                    - iva
+        Rates:
+            class: AppBundle\Entity\Oferta
+            list:
+                fields:
+                    - id
+                    - { property: 'nombreTranslation', label: 'Nombre' }
+                    - codigo
+                    - fechaInicio
+                    - fechaFin
+            show:
+                fields:
+                    - id
+                    - { property: 'nombreTranslation', label: 'Nombre' }
+                    - codigo
+                    - fechaInicio
+                    - fechaFin
+        WiseDeals:
+            class: AppBundle\Entity\Oferta
+            list:
+                fields:
+                    - id
+                    - { property: 'nombreTranslation', label: 'Nombre' }
+                    - codigo
+                    - fechaInicio
+                    - fechaFin
+            show:
+                fields:
+                    - id
+                    - { property: 'nombreTranslation', label: 'Nombre' }
+                    - codigo
+                    - fechaInicio
+                    - fechaFin
+        LastMinutes:
+            class: AppBundle\Entity\Oferta
+            list:
+                fields:
+                    - id
+                    - codigo
+                    - fechaInicio
+                    - fechaFin
+            show:
+                fields:
+                    - id
+                    - codigo
+                    - fechaInicio
+                    - fechaFin
+        Autos:
+            class: AppBundle\Entity\Auto
+            form:
+                fields:
+                     - precio
+                     - { property: 'imageFile', type: 'vich_image', type_options: { required: true } }
+                     - modelo
+                     - pasajeros
+                     - puertas
+                     - aire
+                     - maletasGrandes
+                     - maletasPequenas
+                     - cdReproductor
+                     - usb
+                     - auxiliar
+                     - pad
+                     - pas
+                     - transmision
+                     - categoria
+            list:
+                fields:
+                    - id
+                    - precio
+                    - { property: 'image', type: 'image', base_path: %app.path.product_images% }
+                    - modelo
+                    - pasajeros
+                    - puertas
+                    - aire
+                    - maletasGrandes
+                    - maletasPequenas
+                    - cdReproductor
+                    - usb
+                    - auxiliar
+                    - transmision
+            show:
+                fields:
+                    - id
+                    - precio
+                    - { property: 'image', type: 'image', base_path: %app.path.product_images% }
+                    - modelo
+                    - pasajeros
+                    - puertas
+                    - aire
+                    - maletasGrandes
+                    - maletasPequenas
+                    - cdReproductor
+                    - usb
+                    - auxiliar
+                    - transmision
+        Accesorios:
+            class: AppBundle\Entity\Accesorio
+            form:
+                fields:
+                    - { property: 'translations', type: 'a2lix_translations', label: 'Traducciones', type_options: { required: true }}
+                    - { property: 'imageFile', type: 'vich_image', type_options: { required: true } }
+                    - { property: 'precio', type: 'money', type_options: { currency: 'USD' , grouping: true } }
+                    - cantidad
+                    - disponible
+            list:
+                fields:
+                    - id
+                    - { property: 'nombreTranslation', label: 'Nombre' }
+                    - { property: 'image', type: 'image', base_path: %app.path.product_images% }
+                    - precio
+                    - cantidad
+                    - disponible
+            show:
+                fields:
+                    - id
+                    - { property: 'nombreTranslation', label: 'Nombre' }
+                    - { property: 'image', type: 'image', base_path: %app.path.product_images% }
+                    - precio
+                    - cantidad
+                    - disponible
+        Seguros:
+            class: AppBundle\Entity\Seguro
+            form:
+                fields:
+                    - { property: 'translations', type: 'a2lix_translations', label: 'Traducciones', type_options: { required: true }}
+                    - { property: 'imageFile', type: 'vich_image', type_options: { required: true } }
+                    - { property: 'precio', type: 'money', type_options: { currency: 'USD' , grouping: true } }
+            list:
+                fields:
+                    - id
+                    - { property: 'nombreTranslation', label: 'Nombre' }
+                    - { property: 'image', type: 'image', base_path: %app.path.product_images% }
+                    - precio
+            show:
+                fields:
+                    - id
+                    - { property: 'nombreTranslation', label: 'Nombre' }
+                    - { property: 'image', type: 'image', base_path: %app.path.product_images% }
+                    - precio
+        AutoCategorias:
+            class: AppBundle\Entity\AutoCategoria
+            form:
+                fields:
+                     - { property: 'translations', type: 'a2lix_translations', label: 'Traducciones', type_options: { required: true } }
+            list:
+                fields:
+                    - id
+                    - nombre
+            show:
+                fields:
+                    - id
+                    - nombre
+        Transmisiones:
+            class: AppBundle\Entity\Transmision
+            form:
+                fields:
+                    - { property: 'translations', type: 'a2lix_translations', label: 'Traducciones',type_options: { required: true }}
+            list:
+                fields:
+                    - id
+                    - nombre
+            show:
+                fields:
+                    - id
+                    - nombre
+        Comentarios:
+            class: AppBundle\Entity\Mensaje
+            list:
+                actions: ['-new']
+                fields:
+                    - id
+                    - creado
+                    - nombre
+                    - correo
+                    - titulo
+                    - { property: 'locale', label: Idioma }
+            show:
+                fields:
+                    - id
+                    - creado
+                    - nombre
+                    - correo
+                    - titulo
+                    - { property: 'locale', label: Idioma }
+        Contacto:
+            class: AppBundle\Entity\Mensaje
+            list:
+                actions: ['-new']
+                fields:
+                    - id
+                    - creado
+                    - nombre
+                    - correo
+                    - titulo
+                    - { property: 'locale', label: Idioma }
+            show:
+                fields:
+                    - id
+                    - creado
+                    - nombre
+                    - correo
+                    - titulo
+                    - { property: 'locale', label: Idioma }
+        FAQ:
+            class: AppBundle\Entity\Texto
+            list:
+                fields:
+                    - id
+                    - { property: 'tituloTranslation', label: 'Título' }
+                    - { property: 'textoTranslation', label: 'Texto' }
+            show:
+                fields:
+                    - id
+                    - { property: 'tituloTranslation', label: 'Título' }
+                    - { property: 'textoTranslation', label: 'Texto' }
+
+        Tip:
+            class: AppBundle\Entity\Texto
+            list:
+                fields:
+                    - id
+                    - { property: 'tituloTranslation', label: 'Título' }
+                    - { property: 'textoTranslation', label: 'Texto' }
+            show:
+                fields:
+                    - id
+                    - { property: 'tituloTranslation', label: 'Título' }
+                    - { property: 'textoTranslation', label: 'Texto' }
+        Entradas:
+            class: abd\BlogBundle\Entity\Post
+            list:
+                fields:
+                    - id
+                    - creado
+                    - tituloTranslation
+                    - { property: 'imagen', type: 'image', base_path: %app.path.product_images% }
+            show:
+                fields:
+                    - creado
+                    - tituloTranslation
+                    - { property: 'imagen', type: 'image', base_path: %app.path.product_images% }
+                    - { property: 'textoTranslation', type: 'raw' }
+
+
+        Usuarios:
+            class: abd\UserBundle\Entity\User
+            list:
+                actions: [{ name: 'show', icon: 'search', label: false }, { name: 'edit', icon: 'pencil', label: false },{ name: 'delete', icon: 'trash', label: false },'search','-new']
+                fields:
+                    - id
+                    - username
+                    - email
+            search:
+                fields:
+                    - username
+                    - email
+            form:
+                fields:
+                    - username
+                    - email
+                    - { property: 'plainPassword', type: 'text'}
+                    - roles
+                    - enabled

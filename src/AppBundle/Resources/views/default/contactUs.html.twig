@@ -1,0 +1,134 @@
+{% extends '::base.html.twig' %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        $(function () {
+            $(document).ready(function () {
+                $('.bttimepicker').datetimepicker({
+                    sideBySide: false,
+                    format: 'DD/MM/YYYY HH:mm',
+                    toolbarPlacement: 'bottom',
+                    showClose: true,
+                });
+
+                $('#alquiler_primer_paso_samePlace').click(function () {
+                    $('#lugarRegreso').toggleClass('hidden');
+                });
+
+
+                setAutoCode($('#alquiler_primer_paso_auto'));
+                $('#alquiler_primer_paso_auto').on('change', function () {
+                    setAutoCode(this);
+                });
+
+                function setAutoCode(select) {
+                    var value = $('option:selected', select).attr('code');
+                    $('#alquiler_primer_paso_codigo').val(value);
+                }
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block activelicu %}{{ "active-li" }}{% endblock %}
+{% block activelicuimage %}
+    <span class='hidden-xs'><img class="arrow-side-bar"
+                                 src='{{ asset('bundles/app/frontend/general/arrow-li.png') }}'></span>
+{% endblock %}
+
+{% block content %}
+    <div class="col-md-12 bar-up-margin">
+        <div class="col-md-9 bar-up-padd">
+            <div class="col-md-12 seccion-header bar-up-padd-left">
+                <h1 class="bar-up-font-main">BE WISE. CONTACT US!!!</h1>
+            </div>
+        </div>
+        <div class="col-md-3 text-right">
+            {% include 'AppBundle:default:redes.html.twig' %}
+        </div>
+    </div>
+    <div class="col-md-12 row">
+        <div class="col-md-9">
+            {% include "AppBundle:default:notification.html.twig" %}
+            <div class="top-component-font-up special-font-great-deals">by phone, mail, google
+                +, facebook,
+                & twitter...
+                <div class="br-own"></div>
+                there is always a wise way to rent a car.
+            </div>
+            <p>WE CARE ABOUT YOU</p>
+            <p>
+                zczxczxczxcz Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+                rem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante. rem ipsum dolor
+                sit amet, consectetur adipiscing eli
+            </p>
+            <p>
+                zczxczxczxcz Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+                rem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante. rem ipsum dolor
+                sit amet, consectetur adipiscing eli
+            </p>
+            <p>
+                zczxczxczxcz Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+                rem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante. rem ipsum dolor
+                sit amet, consectetur adipiscing eli
+            </p>
+            <div class="col-md-12 contact-us-box">
+                <div class="col-md-4"><img class="contact-us-img"
+                                           src="{{ asset('bundles/app/frontend/general/ciudad.png') }}"></div>
+                <div class="col-md-8">
+                    <p>Tulum Car</p>
+                    <p>Wise car Rental Office</p>
+                    <div class="br-own"></div>
+                    <p>Ave Cordoba 234 entre sada y sdkj, Merica, Yucatan</p>
+                    <p>CP 77760</p>
+                    <div class="br-own"></div>
+                    <p>Local Number: 452</p>
+                </div>
+            </div>
+
+            <div class=" col-md-12 seccion-header bar-up-padd-left">
+                <h2 class="bar-up-font-main">contact us</h2>
+            </div>
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+            <div class="col-md-12 comment-box">
+                <div class="col-md-5">
+                    <div class="col-md-12 padd-none">
+                        {{ form_row(form.nombre,{ 'label_attr': {'class': 'text-label'},'attr': {'class': 'form-control input-own'} }) }}
+                    </div>
+                    <div class="col-md-12 padd-none">
+                        {{ form_row(form.correo,{ 'label_attr': {'class': 'text-label'},'attr': {'class': 'form-control input-own'} }) }}
+                        <label class="text-label-contact color-red">Not public Email:</label>
+                    </div>
+                    <div class="col-md-12 padd-none">
+                        {{ form_row(form.telefono,{ 'label_attr': {'class': 'text-label'},'attr': {'class': 'form-control input-own'} }) }}
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="col-md-12 padd-none">
+                        {{ form_row(form.texto,{ 'label_attr': {'class': 'text-label'},'attr': {'class': 'form-control'} }) }}
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="col-md-3 col-md-offset-9">
+                        <div class="col-md-6">
+                            {{ form_row(form.submit,{ 'attr': {'class': 'btn label text-label-contact btn-send'} }) }}
+                            {{ form_row(form.submit,{ 'attr': {'class': 'btn label text-label-contact btn-send'} }) }}
+                        </div>
+                        <div class="col-md-6">
+                            <div>
+                                <button type="reset" class="btn label text-label-contact btn-clear">Clear</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{ form_end(form) }}
+
+        </div>
+        <div class="col-md-3">
+            {% include 'AppBundle:default:lastminutecars.html.twig' %}
+        </div>
+    </div>
+
+{% endblock %}

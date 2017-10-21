@@ -1,0 +1,195 @@
+{%- block entity_translation_widget -%}
+    {%- if required and placeholder is none and not placeholder_in_choices and not multiple and (attr.size is not defined or attr.size <= 1) -%}
+        {% set required = false %}
+    {%- endif -%}
+    <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
+        {%- if placeholder is not none -%}
+            <option value=""{% if required and value is empty %} selected="selected"{% endif %}>{{ placeholder != '' ? placeholder|trans({}, translation_domain) }}</option>
+        {%- endif -%}
+        {%- if preferred_choices|length > 0 -%}
+            {% set options = preferred_choices %}
+            {{- block('choice_widget_options') -}}
+            {%- if choices|length > 0 and separator is not none -%}
+                <option disabled="disabled">{{ separator }}</option>
+            {%- endif -%}
+        {%- endif -%}
+        {%- set options = choices -%}
+        {{- block('entity_translation_widget_options') -}}
+    </select>
+{%- endblock entity_translation_widget -%}
+
+{%- block entity_translation_widget_options -%}
+    {% for group_label, choice in options %}
+        {%- if choice is iterable -%}
+            <optgroup label="{{ choice_translation_domain is same as(false) ? group_label : group_label|trans({}, choice_translation_domain) }}">
+                {% set options = choice %}
+                {{- block('choice_widget_options') -}}
+            </optgroup>
+        {%- else -%}
+            {% set attr = choice.attr %}
+            <option value="{{ choice.value }}" {{ block('attributes') }}{% if choice is selectedchoice(value) %} selected="selected"{% endif %}>
+                {{ (choice.data.translations | default_lang (app.request.locale)).nombre  }}
+                {#% if choice.data.translations[app.request.locale] is defined %}
+                    {{ choice.data.translations[app.request.locale].nombre }}
+                {% else %}
+                    {{ choice.data.translations['en'].nombre }}
+                {% endif %#}
+            </option>
+        {%- endif -%}
+    {% endfor %}
+{%- endblock entity_translation_widget_options -%}
+
+{% block accesorio_widget %}
+    {% spaceless %}
+        <table class="table-responsive table-wizard">
+            <thead class="table-head">
+            <tr>
+                <th></th>
+                <th class="header-up-mid-table-wizard table-head">Accesorios</th>
+                <th class="header-up-mid-table-wizard table-head">Precio X Dia</th>
+                <th class="header-up-mid-table-wizard table-head">USD</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for group_label, choice in choices %}
+                <tr>
+                    <td class="header-up-mid-table"><input class="header-up-mid-table table-wizar-first-colum"
+                                                           type="checkbox" name="{{ full_name }}"
+                                                           value="{{ choice.value }}" {% if choice is selectedchoice(value) %} checked="checked"{% endif %}/>
+                    </td>
+                    <td class="header-up-mid-table table-wizar-first-colum">{{ (choice.data.translations | default_lang (app.request.locale)).nombre  }}</td>
+                    <td class="header-up-mid-table table-wizar-first-colum-other"></td>
+                    <td class="header-up-mid-table table-wizar-first-colum-other">{{ choice.data.precio }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endspaceless %}
+{% endblock %}
+
+{% block seguro_widget %}
+    {% spaceless %}
+        <table class="table-responsive table-wizard">
+            <thead class="table-head">
+            <tr>
+                <th></th>
+                <th class="header-up-mid-table-wizard table-head">Seguros</th>
+                <th class="header-up-mid-table-wizard table-head">USD</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for group_label, choice in choices %}
+                <tr>
+                    <td class="header-up-mid-table"><input class="header-up-mid-table table-wizar-first-colum"
+                                                           type="checkbox" name="{{ full_name }}"
+                                                           value="{{ choice.value }}" {% if choice is selectedchoice(value) %} checked="checked"{% endif %}/>
+                    </td>
+                    <td class="header-up-mid-table table-wizar-first-colum">{{ (choice.data.translations | default_lang (app.request.locale)).nombre }}</td>
+                    <td class="header-up-mid-table table-wizar-first-colum-other">{{ choice.data.precio }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endspaceless %}
+{% endblock %}
+
+{%- block auto_widget -%}
+    {%- if required and placeholder is none and not placeholder_in_choices and not multiple and (attr.size is not defined or attr.size <= 1) -%}
+        {% set required = false %}
+    {%- endif -%}
+    <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
+        {%- if placeholder is not none -%}
+            <option value=""{% if required and value is empty %} selected="selected"{% endif %}>{{ placeholder != '' ? placeholder|trans({}, translation_domain) }}</option>
+        {%- endif -%}
+        {%- if preferred_choices|length > 0 -%}
+            {% set options = preferred_choices %}
+            {{- block('auto_widget_options') -}}
+            {%- if choices|length > 0 and separator is not none -%}
+                <option disabled="disabled">{{ separator }}</option>
+            {%- endif -%}
+        {%- endif -%}
+        {%- set options = choices -%}
+        {{- block('auto_widget_options') -}}
+    </select>
+{%- endblock auto_widget -%}
+
+{%- block auto_widget_options -%}
+    {% for group_label, choice in options %}
+        {%- if choice is iterable -%}
+            <optgroup
+                    label="{{ choice_translation_domain is same as(false) ? group_label : group_label|trans({}, choice_translation_domain) }}">
+                {% set options = choice %}
+                {{- block('choice_widget_options') -}}
+            </optgroup>
+        {%- else -%}
+            {% set attr = choice.attr %}
+            <option value="{{ choice.value }}" {{ block('attributes') }}{% if choice is selectedchoice(value) %} selected="selected"{% endif %}
+                    code="{{ codes[choice.data.id] }}">{{ choice_translation_domain is same as(false) ? choice.label : choice.label|trans({}, choice_translation_domain) }}</option>
+        {%- endif -%}
+    {% endfor %}
+{%- endblock auto_widget_options -%}
+
+{% block ofertaauto_row %}
+    {{ block('form_row') }}
+    {% if allow_add|default(false) %}
+        {% set js_add_item %}
+            $(function() {
+            if (event.preventDefault) event.preventDefault(); else event.returnValue = false;
+
+            var collection = $('#{{ id }}');
+            var numItems = collection.children('div div.row-group').length;
+
+            collection.prev('.collection-empty').remove();
+
+            var newItem = collection.attr('data-prototype')
+            .replace(/\>__name__label__\</g, '>' + numItems + '<')
+            .replace(/_{{ name }}___name__/g, '_{{ name }}_' + numItems)
+            .replace(/{{ name }}\]\[__name__\]/g, '{{ name }}][' + numItems + ']')
+            ;
+
+            collection.append(newItem);
+            initializeSelect2();
+            });
+        {% endset %}
+
+        <div class="text-right field-collection-action">
+            <a href="#" onclick="{{ js_add_item|raw }}" class="text-primary">
+                <i class="fa fa-plus-square"></i>
+                {{ (form|length == 0 ? 'action.add_new_item' : 'action.add_another_item')|trans({}, 'EasyAdminBundle') }}
+            </a>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block appbundle_ofertaauto_row  %}
+    {% spaceless %}
+        <div class="col-md-6 row-group" id="{{ id }}">
+            <div class="box">
+                <div class="box-body">
+                    {% for child in form %}
+                        <div class="col-md-12">
+                            {{ form_row(child) }}
+                        </div>
+                    {% endfor %}
+                    {% if form.parent.vars.allow_delete|default(false) and id != 'appbundle_oferta_ofertaAutos_0' %}
+                        {% set remove_item_javascript %}
+                            $(function() {
+                            if (event.preventDefault) event.preventDefault(); else event.returnValue = false;
+
+                            var containerDiv = $('#{{ id }}');
+                            containerDiv.remove();
+                            });
+                        {% endset %}
+
+                        <div class="text-right field-collection-item-action">
+                            <a href="#" onclick="{{ remove_item_javascript|raw }}" class="text-danger">
+                                <i class="fa fa-remove"></i>
+                                {{ 'action.remove_item'|trans({}, 'EasyAdminBundle') }}
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endspaceless %}
+{% endblock %}

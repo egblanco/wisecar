@@ -1,0 +1,56 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/book/service_container.html
+parameters:
+     auto.service.class: AppBundle\Services\AutoService
+     segundo_paso.form: AppBundle\Form\Reserva\SegundoPasoType
+     primer_paso.form: AppBundle\Form\Reserva\PrimerPasoType
+
+services:
+    fos_user.doctrine_registry:
+        alias: doctrine
+
+    app.form.flow.crear_alquiler:
+        class: AppBundle\Form\Reserva\CrearReservaFlow
+        parent: craue.form.flow
+
+    app.form.flow.crear_alquiler_dirigida:
+        class: AppBundle\Form\Reserva\CrearReservaDirigidaFlow
+        parent: craue.form.flow
+        arguments:
+        - "@service_container"
+
+    app.form.flow.modificar_alquiler:
+        class: AppBundle\Form\Reserva\ModificarReservaFlow
+        parent: craue.form.flow
+        arguments:
+            - "@service_container"
+
+    auto.service:
+        class: "%auto.service.class%"
+
+    primer_paso.service:
+        class: "%primer_paso.form%"
+        tags:
+           - { name: form.type, alias: 'alquiler_primer_paso' }
+        arguments:
+            em: "@doctrine.orm.entity_manager"
+
+    segundo_paso.service:
+        class: "%segundo_paso.form%"
+        tags:
+           - { name: form.type, alias: 'alquiler_segundo_paso' }
+        arguments:
+            em: "@doctrine.orm.entity_manager"
+
+    app.twig_extension:
+        class: AppBundle\Twig\InstanceExtension
+        public: false
+        tags:
+            - { name: twig.extension }
+
+    app.default_lang_extension:
+        class: AppBundle\Twig\DefaultLangExtension
+        arguments:
+             container: "@service_container"
+        tags:
+           - { name: twig.extension }

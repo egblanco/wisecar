@@ -1,0 +1,367 @@
+{% extends '::base.html.twig' %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        $(function () {
+            $(document).ready(function () {
+                $('.bttimepicker').datetimepicker({
+                    sideBySide: false,
+                    format: 'MM/DD/YYYY-HH:mm',
+                    toolbarPlacement: 'bottom',
+                    showClose: true,
+                    locale: '{{ app.request.locale|escape('js') }}'
+                });
+
+                /*if($("#alquiler_segundo_paso_samePlace").is(':checked')) {
+                 $('#lugarRegreso').addClass('hidden');
+                 setRecogidaRequired();
+                 }*/
+
+                $('#alquiler_primer_paso_samePlace').click(function () {
+                    $('#lugarRegreso').toggleClass('hidden');
+                    setRecogidaRequired();
+                });
+
+                function setRecogidaRequired() {
+                    if ($('#lugarRegreso').hasClass('hidden') == false) {
+                        $('#alquiler_primer_paso_lugarRegreso').attr('required', 'required');
+                    } else {
+                        $('#alquiler_primer_paso_lugarRegreso').removeAttr('required');
+                    }
+                }
+
+
+                setAutoCode($('#alquiler_primer_paso_auto'));
+                $('#alquiler_primer_paso_auto').on('change', function () {
+                    setAutoCode(this);
+                });
+
+                function setAutoCode(select) {
+                    var value = $('option:selected', select).attr('code');
+                    $('#alquiler_primer_paso_codigo').val(value);
+                }
+
+                //CAROUSEL
+                $('.carousel[data-type="multi"] .item').each(function () {
+                    var next = $(this).next();
+                    if (!next.length) {
+                        next = $(this).siblings(':first');
+                    }
+                    next.children(':first-child').clone().appendTo($(this));
+
+                    for (var i = 0; i < 2; i++) {
+                        next = next.next();
+                        if (!next.length) {
+                            next = $(this).siblings(':first');
+                        }
+
+                        next.children(':first-child').clone().appendTo($(this));
+                    }
+                });
+
+
+            });
+        });
+    </script>
+{% endblock %}
+
+
+{% block activelihome %}{{ "active-li" }}{% endblock %}
+
+{% block activelihomeimage %}
+    <span class='hidden-xs'><img class="arrow-side-bar"
+                                 src='{{ asset('bundles/app/frontend/general/arrow-li.png') }}'></span>
+{% endblock %}
+
+{% block content %}
+
+
+    <div class="col-md-12 bar-up-margin">
+        <div class="col-md-9 bar-up-padd">
+            <div class="col-md-5 seccion-header bar-up-padd-left">
+                <h1 class="bar-up-font-main">{{ 'page.index.title.makeNow' |  trans }}!!!</h1>
+            </div>
+
+            <div class="col-md-7 text-seccion bar-up-padd-t-b">
+                <span class="label label-success bar-up-font-v-m-c"><a class="color-font-white"
+                                                                       href="{{ path('alquiler_search') }}">{{ 'reservation.view' |  trans }}</a></span>
+                <span class="label label-success bar-up-font-v-m-c"><a class="color-font-white"
+                                                                       href="{{ path('alquiler_search') }}">{{ 'reservation.modify' |  trans }}</a></span>
+                <span class="label label-success bar-up-font-v-m-c"><a class="color-font-white"
+                                                                       href="{{ path('alquiler_search') }}">{{ 'reservation.cancel' |  trans }}</a></span>
+                <span class="text-seccion-step">{{ 'reservation.step' |  trans }}</span>
+                <span class="text-seccion-step-number-select">1</span>
+                <span class="text-seccion-step-number">2</span>
+                <span class="text-seccion-step-number">3</span>
+            </div>
+        </div>
+        <div class="col-md-3 col-xs-12 text-right">
+            {% include 'AppBundle:default:redes.html.twig' %}
+        </div>
+    </div>
+    <div class="col-md-12 row">
+        <div class="col-md-9">
+            <form name="alquiler_primer_paso" method="post" action="{{ path('wizard') }}">
+                <div class="row br-own">
+                    <div class="col-md-5 pull-left">
+                        <label class="text-label">{{ 'reservation.form.pickup_location' |  trans }}:</label>
+                        {{ form_widget(form.lugarRecogida, { 'label_attr': {'class': 'text-label'},'attr': {'class': 'form-control input-own'} }) }}
+                    </div>
+                    <div class="col-md-5">
+                        <label class="text-label">{{ 'reservation.form.pickup_date' |  trans }}:</label>
+                        {{ form_widget(form.fechaInicio, { 'label_attr': {'class': 'text-label'},'attr': {'class': 'form-control input-own bttimepicker'} }) }}
+                    </div>
+                    <div class="br-own"></div>
+                </div>
+                <div class="row br-own">
+                    <div class="col-md-5">
+                        <div class="checkbox">
+                            <label>
+                                {{ form_widget(form.samePlace, { 'label_attr': {'class': 'text-label'}}) }} {{ 'reservation.form.returningSameLocation' |  trans }}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <label class="text-label">{{ 'reservation.form.returnDate' |  trans }}:</label>
+                        {{ form_widget(form.fechaFin, { 'label_attr': {'class': 'text-label'},'attr': {'class': 'form-control input-own bttimepicker'} }) }}
+                    </div>
+                </div>
+                <div id="lugarRegreso" class="row hidden br-own">
+                    <div class="col-md-5">
+                        <label class="text-label">{{ 'reservation.form.returnPlace' |  trans }}:</label>
+                        {{ form_widget(form.lugarRegreso, { 'label_attr': {'class': 'text-label'},'attr': {'class': 'form-control input-own'} }) }}
+                    </div>
+                </div>
+                <div class="row br-own">
+                    <div class="col-md-5">
+                        <label class="text-label">{{ 'reservation.form.carType' |  trans }}:</label>
+                        {{ form_widget(form.auto, { 'label_attr': {'class': 'text-label'},'attr': {'class': 'form-control input-own'} }) }}
+                    </div>
+                    <div class="col-md-2">
+                        <label class="text-label">{{ 'reservation.form.code' |  trans }}:</label>
+                        {{ form_widget(form.codigo, { 'label_attr': {'class': 'text-label'},'attr': {'class': 'form-control input-own', 'readonly': 'true' } }) }}
+                    </div>
+                </div>
+                <div class="row br-own">
+                    <div class="col-md-1 col-md-offset-9">
+                        <button type="submit" class="btn pull-right text-go-button">{{ 'reservation.form.go' |  trans }}</button>
+                    </div>
+                </div>
+                {#<div class="row">#}
+                {#<div class="col-md-5 col-md-offset-1">#}
+                {#{% include 'CraueFormFlowBundle:FormFlow:buttons.html.twig' %}#}
+                {#</div>#}
+                {#</div>#}
+
+                {#{% include 'CraueFormFlowBundle:FormFlow:buttons.html.twig' %}#}
+                {{ form_rest(form) }}
+            </form>
+            <div>
+                <hr class="hr-content">
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="top-component-font-up">
+                        {{ 'page.index.title.welcome' |  trans }}!!!
+                    </div>
+                    <div class="br-own"></div>
+                    <p>Lorem ipsum dolor sit Lorem ipsum dolor sit </p>
+                    <p>Lorem ipsum dolor sit </p>
+                    <p>Lorem ipsum dolor sit med </p>
+                    <p>Lorem ipsum dolor sit med Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
+                        posuere erat a ante.
+                        rem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+                        rem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+                        rem ipsum
+                    </p>
+                    <p>Lorem ipsum dolor sit med </p>
+                    <p>
+                        dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+                        rem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+                        rem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+                    </p>
+                </div>
+            </div>
+
+            <div>
+                <hr class="hr-content">
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="top-component-font-up">{{ 'page.index.title.findUs' |  trans }}!!!</div>
+                    {#<div class=""><img src="{{ asset('bundles/app/frontend/general/mapTest.png') }}"></div>#}
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3668.922448980982!2d-82.35990210386963!3d23.13650974995034!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses-419!2scu!4v1459868637570"
+                            width="350" height="350" frameborder="0" style="border:0" allowfullscreen></iframe>
+                </div>
+                <div class="col-md-1">
+                </div>
+                <div class="col-md-5">
+                    <div class="top-component-font-up">{{ 'page.index.title.wiseOffers' |  trans }}!!!</div>
+                    {% set cont = 0 %}
+                    {% for acc in accesorios %}
+                        {% set cont = cont + 1 %}
+                        {% if cont <= 2 %}
+                            <div class="">
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <td class="show-extras">
+                                            <div class="font-dispo-up">{{ (acc.translations | default_lang (app.request.locale)).nombre }}</div>
+                                            <div class="br-own"></div>
+                                            <div class="font-dispo-down">$ {{ acc.precio }} USD per day</div>
+                                            <div class="font-dispo-down br-own-top">{{ acc.disponible }} Disp </div>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <img class="img-caro" src="{{ asset('uploads/images/products/') }}{{ acc.image }}">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    {#<div class="">#}
+                    {#<table class="table table-bordered">#}
+                    {#<tr>#}
+                    {#<td class="show-extras">#}
+                    {#<div class="font-dispo-up">baby seats</div>#}
+                    {#<div class="br-own"></div>#}
+                    {#<div class="font-dispo-down">$3 USD per day</div>#}
+                    {#</td>#}
+                    {#<td>#}
+                    {#<div><img src="{{ asset('bundles/app/frontend/accesorios/babySeats.png') }}">#}
+                    {#</div>#}
+                    {#</td>#}
+                    {#</tr>#}
+                    {#</table>#}
+                    {#</div>#}
+                    {#<div class="">#}
+                    {#<table class="table table-bordered">#}
+                    {#<tr>#}
+                    {#<td class="show-extras">#}
+                    {#<div class="font-dispo-up">baby seats</div>#}
+                    {#<div class="br-own"></div>#}
+                    {#<div class="font-dispo-down">$3 USD per day</div>#}
+                    {#</td>#}
+                    {#<td>#}
+                    {#<div><img src="{{ asset('bundles/app/frontend/accesorios/gps.png') }}"></div>#}
+                    {#</td>#}
+                    {#</tr>#}
+                    {#</table>#}
+                    {#</div>#}
+                </div>
+            </div>
+
+            <div>
+                <hr class="hr-content">
+            </div>
+
+
+            {#<img class="img-car-show-lat" src="{{ asset('uploads/images/products/') }}{{ ima.imagen }}">#}
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="top-component-font-up">{{ 'page.index.title.gallery' |  trans }}</div>
+                </div>
+                {#CAROUSEL#}
+                <div class="col-md-12">
+                    <div class="carousel slide" data-ride="carousel" data-type="multi" data-interval="30000"
+                         id="myCarousel">
+                        <div class="carousel-inner">
+                            {% set cont = 0 %}
+                            {% set active = "" %}
+                            {% for ima in gallery %}
+                                {% if cont == 0 %}
+                                    {% set active = "active" %}
+                                {% else %}
+                                    {% set active = "" %}
+                                {% endif %}
+                                {% set cont = 1 %}
+                                <div class="item {{ active }}">
+                                    <div class="col-md-3 col-sm-6 col-xs-12"><a target="_blank"
+                                                                                href="{{ asset('uploads/images/products/') }}{{ ima.imagen }}"><img
+                                                    class="img-caro"
+                                                    src="{{ asset('uploads/images/products/') }}{{ ima.imagen }}"></a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <a class="left carousel-control" href="#myCarousel" data-slide="prev"><i
+                                    class="glyphicon glyphicon-chevron-left"></i></a>
+                        <a class="right carousel-control" href="#myCarousel" data-slide="next"><i
+                                    class="glyphicon glyphicon-chevron-right"></i></a>
+                    </div>
+                </div>
+                {#</div>#}
+
+            </div>
+
+            <div>
+                <hr class="hr-content">
+            </div>
+
+
+            <div class="col-md-12 seccion-header bar-up-padd-left">
+                <h1 class="bar-up-font-main">{{ 'page.index.title.careAbout' |  trans }}!!!</h1>
+            </div>
+            <div class="col-md-12">
+                <div class="sub-general-font top-component-font-up ">{{ 'page.index.title.whyShould' |  trans }}??
+                </div>
+            </div>
+
+
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+                rem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+                rem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+                rem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+                rem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+                rem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+            </p>
+
+
+            <div>
+                <hr class="hr-content">
+            </div>
+
+            {% for post in posts %}
+                {% if loop.index % 2 != 0 %}
+                    <div class="row">
+                {% endif %}
+                <div class="col-md-6">
+                    <div class="thumbnail">
+                        <img alt="300x200" data-src="holder.js/300x200" class="blog-img"
+                             src="{{ asset('uploads/images/products/') }}{{ post.imagen }}">
+                        <div class="caption">
+                            <h3 class="post-title">{{ post.titulo }}</h3>
+                            <p>
+                                {% if post.texto|length > 150 %}
+                                    {{ post.texto|slice(0, 150) |raw }}...
+                                {% else %}
+                                    {{ post.texto | raw }}
+                                {% endif %}
+                            </p>
+                            <p><a href="{{ path('post_show',{ 'id': post.id }) }}"><span class="label label-info">{{ 'sidebar.main.reasMore' |  trans }}</span></a></p>
+                        </div>
+                    </div>
+                </div>
+                {% if loop.index % 2 == 0 or (loop.index == posts | length) %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+
+        </div>
+        <div class="col-md-3">
+
+            {% include 'AppBundle:default:lastminutecars.html.twig' %}
+
+        </div>
+
+    </div>
+
+{% endblock %}
+
+
+
